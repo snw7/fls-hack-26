@@ -2,8 +2,6 @@ import { startTransition, useState } from 'react';
 import { AppShell } from './components/AppShell';
 import { ClarificationChat } from './components/ClarificationChat';
 import { DocumentReviewPane } from './components/DocumentReviewPane';
-import { SessionSidebar } from './components/SessionSidebar';
-import { StatusBanner } from './components/StatusBanner';
 import { requirementsTemplate } from './data/template';
 import { usePersistentSession } from './hooks/usePersistentSession';
 import { runtimeConfig } from './lib/config';
@@ -20,9 +18,7 @@ function toTimestamp(): string {
 }
 
 export default function App() {
-  const { state, setState, reset } = usePersistentSession(
-    runtimeConfig.defaultTemplateId
-  );
+  const { state, setState } = usePersistentSession(runtimeConfig.defaultTemplateId);
   const [composerValue, setComposerValue] = useState('');
 
   const currentRevision = state.revisions.at(-1) ?? null;
@@ -254,29 +250,8 @@ export default function App() {
     }
   }
 
-  const banner = state.lastError ? (
-    <StatusBanner
-      tone="error"
-      title="Webhook problem"
-      message={state.lastError}
-    />
-  ) : (
-    <StatusBanner
-      tone="info"
-      title="Agent service contract"
-      message="This UI expects two active backend endpoints: /webhook/discovery-agent and /webhook/revision-agent."
-    />
-  );
-
   return (
-    <AppShell
-      appName={runtimeConfig.appName}
-      phase={state.phase}
-      status={state.status}
-      onReset={reset}
-      sidebar={<SessionSidebar state={state} />}
-      banner={banner}
-    >
+    <AppShell>
       {state.phase === 'clarification' || !currentRevision ? (
         <ClarificationChat
           messages={state.chatHistory}

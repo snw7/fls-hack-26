@@ -11,3 +11,6 @@ __pycache__/
 .venv/
 *.pyc
 backend/.venv/
+*.tsbuildinfo
+frontend/vite.config.js
+frontend/vite.config.d.ts
