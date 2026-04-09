@@ -1,27 +1,46 @@
-# fls-hack-26
+# FI Requirements Workbench
 
-## Notes DeepDive
+Single-page React frontend for an agent-assisted requirements workflow. The UI keeps session state in the browser, talks to two n8n webhooks, renders Markdown, collects selected-text comments, and shows local diffs between revisions.
 
-forward innovation
-background integration (mainframe <-> cloud native)
+The application source lives in `frontend/`.
 
-key interaction between business requirements and technical tasks
+## Stack
 
-https://github.com/skleinke/ChefTreffHackFIChallenge_v2
+- React 19 + Vite + TypeScript
+- `react-markdown` + `remark-gfm`
+- Zod for webhook validation
+- Vitest + Testing Library
+- Docker + Nginx + Docker Compose
+- n8n for the `discovery-agent` and `revision-agent` webhook flows
 
-dev: needs to get explanation of problem (high complexity typically)
-business analysts
+## Run locally
 
-business analyst -> requirements
-...
-(what happens here? e.g. split to technical tasks)
-...
--> developing code
-...
--> testing
-...
--> business analysts: evaluate ->> further iterations (possibly)
+```bash
+cp .env.example .env
+docker compose up --build
+```
 
-### Interesting Sub-Challenges
-- how to answer questiosn, when business analyst is not available?
+Then open:
 
+- App: `http://localhost:3000`
+- n8n: `http://localhost:5678`
+
+## n8n contract
+
+Create or import two active n8n webhooks:
+
+- `POST /webhook/discovery-agent`
+- `POST /webhook/revision-agent`
+
+Their expected payloads and outputs are documented in:
+
+- `docs/n8n-agent-contract.md`
+- `docs/n8n-agent-test-cases.md`
+
+## Local dev without Docker
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
