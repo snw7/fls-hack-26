@@ -17,6 +17,10 @@ business analyst -> requirements
 (what happens here? e.g. split to technical tasks)
 ...
 -> developing code
+...
+-> testing
+...
+-> business analysts: evaluate ->> further iterations (possibly)
 
 ### Interesting Sub-Challenges
 - how to answer questiosn, when business analyst is not available?
