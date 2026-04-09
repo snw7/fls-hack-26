@@ -6,4 +6,8 @@ coverage/
 .DS_Store
 frontend-design/
 Switzer_Complete/
-
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+backend/.venv/

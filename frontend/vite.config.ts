@@ -9,11 +9,11 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/webhook': {
-        target: 'http://localhost:5678',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
       '/webhook-test': {
-        target: 'http://localhost:5678',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
     },
@@ -28,4 +28,3 @@ export default defineConfig({
     },
   },
 });
-

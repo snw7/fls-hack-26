@@ -50,6 +50,8 @@ export interface RevisionRequest {
     comment_id: string;
     selected_text: string;
     comment_text: string;
+    context_before?: string;
+    context_after?: string;
   }>;
   document_language: 'en';
   output_format: 'json';
@@ -93,6 +95,15 @@ async function postJson<T>(
       throw new Error(parsedPayload.assistant_message);
     }
 
+    if (
+      parsedPayload &&
+      typeof parsedPayload === 'object' &&
+      'detail' in parsedPayload &&
+      typeof parsedPayload.detail === 'string'
+    ) {
+      throw new Error(parsedPayload.detail);
+    }
+
     throw new Error(`Webhook request failed with ${response.status}.`);
   }
 
@@ -122,4 +133,3 @@ export function callRevisionAgent(
 ): Promise<RevisionResponse> {
   return postJson(url, payload, parseRevisionResponse, fetcher);
 }
-
