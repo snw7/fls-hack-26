@@ -1,6 +1,6 @@
 # Revision Comment Flow
 
-This sequence diagram shows the minimized runtime flow with frontend-owned state and webhook-based LLM calls.
+This sequence diagram shows the current runtime flow with frontend-owned state and webhook-style FastAPI agent calls.
 
 ```mermaid
 sequenceDiagram
@@ -8,7 +8,7 @@ sequenceDiagram
     participant U as User
     participant FE as Frontend
     participant LS as Browser Storage
-    participant WH as n8n Webhook
+    participant WH as FastAPI Backend
     participant A as Agent
 
     U->>FE: Start session and describe goal

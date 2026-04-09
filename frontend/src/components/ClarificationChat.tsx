@@ -66,8 +66,8 @@ export function ClarificationChat({
         />
         <div className="composer__footer">
           <p className="muted-copy">
-            Local state is saved in the browser. n8n only receives the current
-            conversation payload.
+            Local state is saved in the browser. The backend only receives the
+            current conversation payload.
           </p>
           <button type="submit" className="primary-button" disabled={busy || !value.trim()}>
             {busy ? 'Working…' : 'Send message'}
@@ -77,4 +77,3 @@ export function ClarificationChat({
     </section>
   );
 }
-

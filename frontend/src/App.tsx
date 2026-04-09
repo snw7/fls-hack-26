@@ -211,6 +211,8 @@ export default function App() {
           comment_id: comment.id,
           selected_text: comment.selectedText,
           comment_text: comment.commentText,
+          context_before: comment.contextBefore,
+          context_after: comment.contextAfter,
         })),
         document_language: state.language,
         output_format: 'json',
@@ -261,8 +263,8 @@ export default function App() {
   ) : (
     <StatusBanner
       tone="info"
-      title="n8n contract"
-      message="This UI expects two active n8n webhooks: /webhook/discovery-agent and /webhook/revision-agent."
+      title="Agent service contract"
+      message="This UI expects two active backend endpoints: /webhook/discovery-agent and /webhook/revision-agent."
     />
   );
 
@@ -301,4 +303,3 @@ export default function App() {
     </AppShell>
   );
 }
-

@@ -23,7 +23,7 @@ export function AppShell({
       <div className="app-shell__ambient" aria-hidden="true" />
       <header className="app-header">
         <div>
-          <p className="app-header__eyebrow">Finanz Informatik x Sparkasse</p>
+          <img src="/logo.svg" alt="Finanz Informatik" className="app-header__logo" />
           <h1>{appName}</h1>
         </div>
         <div className="app-header__actions">

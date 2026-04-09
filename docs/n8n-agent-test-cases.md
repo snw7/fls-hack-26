@@ -1,6 +1,6 @@
-# n8n Agent Test Cases
+# Agent Test Cases
 
-These test cases validate the n8n webhook contracts without depending on any frontend behavior.
+These test cases validate the backend webhook contracts without depending on any frontend behavior.
 
 ## Discovery Agent
 

@@ -1,13 +1,13 @@
 # Architecture Overview
 
-This diagram shows the minimized MVP: no custom backend, browser-owned state, and n8n-style webhooks for orchestration.
+This diagram shows the current MVP: browser-owned state with a thin Python agent backend for orchestration.
 
 ```mermaid
 flowchart LR
     U[User]
     FE[Frontend UI\nChat + Markdown Review + Diff]
     BROWSER[(Browser State\nlocalStorage / IndexedDB)]
-    WEBHOOK[n8n Webhooks\nPrompt + Transform Flows]
+    WEBHOOK[FastAPI Agent Backend\nPrompt + Transform Flows]
     AGENT[LLM / Agent Service]
     TEMPLATE[Markdown Template]
 

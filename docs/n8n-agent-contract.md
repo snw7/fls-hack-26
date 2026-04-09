@@ -1,10 +1,10 @@
-# n8n Agent Contract
+# Agent Contract
 
-This document defines the minimal n8n-facing contract for the MVP with no custom backend.
+This document defines the minimal agent-service contract for the MVP.
 
 ## Overview
 
-For the minimized setup, n8n only needs to provide **2 webhook-driven agent flows**:
+For the current setup, the Python backend only needs to provide **2 webhook-driven agent flows**:
 
 1. `discovery-agent`
    Handles the chat-based clarification phase and can eventually return an initial Markdown draft.
@@ -19,7 +19,7 @@ The frontend remains responsible for:
 - rendering Markdown
 - computing diffs between old and new Markdown
 
-n8n is responsible for:
+The backend is responsible for:
 
 - calling the LLM with the right prompt
 - applying the Markdown template when needed
@@ -168,7 +168,7 @@ or
 }
 ```
 
-## Constraints n8n agents should follow
+## Constraints the backend agents should follow
 
 - Keep outputs deterministic and schema-stable.
 - Never return Markdown wrapped inside code fences.
@@ -190,7 +190,7 @@ or
 - one webhook with an `agent` field
   - `agent: "discovery-agent"` or `agent: "revision-agent"`
 
-For the MVP, **two separate webhooks** are simpler to reason about in n8n.
+For the MVP, **two separate webhooks** are simpler to reason about and align with the frontend contract.
 
 ## Frontend expectations
 
