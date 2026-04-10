@@ -4,7 +4,7 @@ import { clearState, loadState, saveState, STORAGE_KEY } from './storage';
 
 describe('storage', () => {
   beforeEach(() => {
-    window.localStorage.clear();
+    window.localStorage.removeItem(STORAGE_KEY);
   });
 
   it('saves and restores session state', () => {
@@ -28,4 +28,3 @@ describe('storage', () => {
     expect(window.localStorage.getItem(STORAGE_KEY)).toBeNull();
   });
 });
-

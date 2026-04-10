@@ -41,22 +41,32 @@ interface DocumentReviewPaneProps {
   diffBlocks: DiffBlock[];
   diffStats: DiffStats;
   busy: boolean;
+  saveBusy: boolean;
+  saveMessage: string | null;
+  saveTone: 'success' | 'error';
   onAddComment: (comment: Omit<PendingComment, 'id' | 'createdAt'>) => void;
   onRemoveComment: (id: string) => void;
   onSubmitRevision: () => void;
+  onSaveJson: () => void;
 }
 
 export function DocumentReviewPane({
   markdown,
   previousMarkdown,
+  revisionCount,
   pendingComments,
   busy,
+  saveBusy,
+  saveMessage,
+  saveTone,
   onAddComment,
   onRemoveComment,
   onSubmitRevision,
+  onSaveJson,
 }: DocumentReviewPaneProps) {
   const selectionPopoverRef = useRef<HTMLFormElement>(null);
   const reviewSurfaceRef = useRef<HTMLElement>(null);
+  const reviewContentRef = useRef<HTMLDivElement>(null);
   const [selectionDraft, setSelectionDraft] = useState<SelectionDraft | null>(null);
   const [commentDecorations, setCommentDecorations] = useState<CommentDecoration[]>([]);
   const [commentText, setCommentText] = useState('');
@@ -77,13 +87,23 @@ export function DocumentReviewPane({
   }, []);
 
   useLayoutEffect(() => {
-    if (!selectionDraft || !selectionPopoverRef.current) {
+    if (
+      !selectionDraft ||
+      !selectionPopoverRef.current ||
+      !reviewContentRef.current
+    ) {
       return;
     }
 
     const { offsetHeight, offsetWidth } = selectionPopoverRef.current;
-    const maxTop = Math.max(VIEWPORT_MARGIN, window.innerHeight - offsetHeight - VIEWPORT_MARGIN);
-    const maxLeft = Math.max(VIEWPORT_MARGIN, window.innerWidth - offsetWidth - VIEWPORT_MARGIN);
+    const maxTop = Math.max(
+      VIEWPORT_MARGIN,
+      reviewContentRef.current.scrollHeight - offsetHeight - VIEWPORT_MARGIN
+    );
+    const maxLeft = Math.max(
+      VIEWPORT_MARGIN,
+      reviewContentRef.current.clientWidth - offsetWidth - VIEWPORT_MARGIN
+    );
     const nextTop = Math.min(Math.max(selectionDraft.top, VIEWPORT_MARGIN), maxTop);
     const nextLeft = Math.min(Math.max(selectionDraft.left, VIEWPORT_MARGIN), maxLeft);
 
@@ -103,18 +123,23 @@ export function DocumentReviewPane({
   }, [selectionDraft, commentText]);
 
   useLayoutEffect(() => {
-    if (!reviewSurfaceRef.current || pendingComments.length === 0) {
+    if (!reviewSurfaceRef.current || !reviewContentRef.current || pendingComments.length === 0) {
       setCommentDecorations([]);
       return;
     }
 
     const reviewSurface = reviewSurfaceRef.current;
+    const reviewContent = reviewContentRef.current;
     let frame = 0;
 
     function scheduleMeasure() {
       cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
-        const nextDecorations = measureCommentDecorations(reviewSurface, pendingComments);
+        const nextDecorations = measureCommentDecorations(
+          reviewSurface,
+          reviewContent,
+          pendingComments
+        );
         setCommentDecorations(nextDecorations);
       });
     }
@@ -140,13 +165,13 @@ export function DocumentReviewPane({
     const range = selection.getRangeAt(0);
     const selectedText = selection.toString().trim();
 
-    if (!selectedText || !reviewSurfaceRef.current) {
+    if (!selectedText || !reviewSurfaceRef.current || !reviewContentRef.current) {
       return;
     }
 
     if (
-      !reviewSurfaceRef.current.contains(range.commonAncestorContainer) &&
-      range.commonAncestorContainer !== reviewSurfaceRef.current
+      !reviewContentRef.current.contains(range.commonAncestorContainer) &&
+      range.commonAncestorContainer !== reviewContentRef.current
     ) {
       return;
     }
@@ -156,26 +181,47 @@ export function DocumentReviewPane({
         ? range.commonAncestorContainer
         : range.commonAncestorContainer.parentElement;
 
-    if (ancestorElement?.closest('[data-comment-overlay="true"]')) {
+    if (
+      ancestorElement?.closest(
+        '[data-comment-overlay="true"], [data-selection-disabled="true"]'
+      )
+    ) {
+      return;
+    }
+
+    const startContainerParent =
+      range.startContainer instanceof Element
+        ? range.startContainer
+        : range.startContainer.parentElement;
+    const endContainerParent =
+      range.endContainer instanceof Element
+        ? range.endContainer
+        : range.endContainer.parentElement;
+
+    if (
+      startContainerParent?.closest('[data-selection-disabled="true"]') ||
+      endContainerParent?.closest('[data-selection-disabled="true"]')
+    ) {
       return;
     }
 
     const rect = range.getBoundingClientRect();
-    const startOffset = getSelectionOffset(reviewSurfaceRef.current, range, 'start');
-    const endOffset = getSelectionOffset(reviewSurfaceRef.current, range, 'end');
-    const { contextBefore, contextAfter } = buildSelectionContext(
+    const contentRect = reviewContentRef.current.getBoundingClientRect();
+    const startOffset = getSelectionOffset(reviewContentRef.current, range, 'start');
+    const endOffset = getSelectionOffset(reviewContentRef.current, range, 'end');
+    const { matchedText, contextBefore, contextAfter } = buildSelectionContext(
       markdown,
       selectedText
     );
 
     setSelectionDraft({
-      selectedText,
+      selectedText: matchedText,
       contextBefore,
       contextAfter,
       startOffset,
       endOffset,
-      top: rect.bottom + 14,
-      left: rect.left,
+      top: rect.bottom - contentRect.top + 14,
+      left: rect.left - contentRect.left,
     });
     setCommentText('');
   }
@@ -206,14 +252,24 @@ export function DocumentReviewPane({
           ref={reviewSurfaceRef}
           className="document-surface"
           data-review-surface="true"
-          onMouseUp={handleSelection}
         >
-          <div className="document-surface__actions">
+          <div
+            className="document-surface__actions"
+            data-selection-disabled="true"
+          >
             {pendingComments.length > 0 ? (
               <p className="document-surface__pending">
                 {pendingComments.length} pending
               </p>
             ) : null}
+            <button
+              type="button"
+              className="document-surface__save"
+              disabled={busy || saveBusy || revisionCount === 0}
+              onClick={onSaveJson}
+            >
+              {saveBusy ? 'Saving…' : 'Save JSON'}
+            </button>
             <button
               type="button"
               className="document-surface__submit"
@@ -223,186 +279,200 @@ export function DocumentReviewPane({
               {busy ? 'Applying…' : 'Adjust that'}
             </button>
           </div>
-          {previousMarkdown ? (
-            <InlineDiffDocument
-              previousMarkdown={previousMarkdown}
-              markdown={markdown}
-            />
-          ) : (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
-          )}
-          {commentDecorations.length > 0 ? (
-            <div className="document-comment-overlay" data-comment-overlay="true">
-              {commentDecorations.map((comment) => (
-                <div key={comment.id}>
-                  {comment.rects.map((rect, index) => (
+          {saveMessage ? (
+            <p
+              className={`document-surface__save-message document-surface__save-message--${saveTone}`}
+              data-selection-disabled="true"
+              aria-live="polite"
+            >
+              {saveMessage}
+            </p>
+          ) : null}
+          <div
+            ref={reviewContentRef}
+            className="document-surface__content"
+            onMouseUp={handleSelection}
+          >
+            {previousMarkdown ? (
+              <InlineDiffDocument
+                previousMarkdown={previousMarkdown}
+                markdown={markdown}
+              />
+            ) : (
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
+            )}
+            {commentDecorations.length > 0 ? (
+              <div className="document-comment-overlay" data-comment-overlay="true">
+                {commentDecorations.map((comment) => (
+                  <div key={comment.id}>
+                    {comment.rects.map((rect, index) => (
+                      <div
+                        key={`${comment.id}-${index}`}
+                        className="document-comment-highlight"
+                        style={{
+                          top: `${rect.top}px`,
+                          left: `${rect.left}px`,
+                          width: `${rect.width}px`,
+                          height: `${rect.height}px`,
+                        }}
+                      />
+                    ))}
                     <div
-                      key={`${comment.id}-${index}`}
-                      className="document-comment-highlight"
+                      className="document-comment-card"
                       style={{
-                        top: `${rect.top}px`,
-                        left: `${rect.left}px`,
-                        width: `${rect.width}px`,
-                        height: `${rect.height}px`,
+                        top: `${comment.cardTop}px`,
+                        left: `${comment.cardLeft}px`,
                       }}
-                    />
-                  ))}
-                  <div
-                    className="document-comment-card"
-                    style={{
-                      top: `${comment.cardTop}px`,
-                      left: `${comment.cardLeft}px`,
-                    }}
-                  >
-                    <p>{comment.commentText}</p>
-                    <div className="document-comment-card__actions">
-                      <button
-                        type="button"
-                        className="document-comment-card__icon"
-                        aria-label="Remove comment"
-                        onClick={() => onRemoveComment(comment.id)}
-                      >
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true"
+                    >
+                      <p>{comment.commentText}</p>
+                      <div className="document-comment-card__actions">
+                        <button
+                          type="button"
+                          className="document-comment-card__icon"
+                          aria-label="Remove comment"
+                          onClick={() => onRemoveComment(comment.id)}
                         >
-                          <path
-                            d="M3 6H21"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M8 6V4.8C8 4.35817 8.35817 4 8.8 4H15.2C15.6418 4 16 4.35817 16 4.8V6"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M18.4 6L17.2751 19.4986C17.2057 20.3308 16.5103 20.9703 15.6752 20.9703H8.32477C7.48973 20.9703 6.79431 20.3308 6.72495 19.4986L5.6 6"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M10 10.5V16"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                          />
-                          <path
-                            d="M14 10.5V16"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                      </button>
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M3 6H21"
+                              stroke="currentColor"
+                              strokeWidth="1.8"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M8 6V4.8C8 4.35817 8.35817 4 8.8 4H15.2C15.6418 4 16 4.35817 16 4.8V6"
+                              stroke="currentColor"
+                              strokeWidth="1.8"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M18.4 6L17.2751 19.4986C17.2057 20.3308 16.5103 20.9703 15.6752 20.9703H8.32477C7.48973 20.9703 6.79431 20.3308 6.72495 19.4986L5.6 6"
+                              stroke="currentColor"
+                              strokeWidth="1.8"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M10 10.5V16"
+                              stroke="currentColor"
+                              strokeWidth="1.8"
+                              strokeLinecap="round"
+                            />
+                            <path
+                              d="M14 10.5V16"
+                              stroke="currentColor"
+                              strokeWidth="1.8"
+                              strokeLinecap="round"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </article>
-      </article>
-
-      {selectionDraft ? (
-        <form
-          ref={selectionPopoverRef}
-          className="selection-popover"
-          style={{
-            top: `${selectionDraft.top}px`,
-            left: `${selectionDraft.left}px`,
-          }}
-          onSubmit={(event) => {
-            event.preventDefault();
-            commitComment();
-          }}
-        >
-          <button
-            type="button"
-            className="selection-popover__floating-action selection-popover__floating-action--dismiss"
-            aria-label="Close comment box"
-            onClick={() => {
-              setSelectionDraft(null);
-              setCommentText('');
-            }}
-          >
-            <svg
-              className="selection-popover__floating-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                d="M18 6L6 18"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <path
-                d="M6 6L18 18"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-          <label className="sr-only" htmlFor="comment-draft">
-            Comment for the selected text
-          </label>
-          <div className="selection-popover__surface">
-            <textarea
-              id="comment-draft"
-              value={commentText}
-              onChange={(event) => setCommentText(event.target.value)}
-              placeholder="Explain the revision the agent should make here."
-              rows={3}
-            />
-            {commentText.trim() ? (
-              <button
-                type="submit"
-                className="selection-popover__submit"
-                aria-label="Queue comment"
-                disabled={!commentText.trim()}
+                ))}
+              </div>
+            ) : null}
+            {selectionDraft ? (
+              <form
+                ref={selectionPopoverRef}
+                className="selection-popover"
+                style={{
+                  top: `${selectionDraft.top}px`,
+                  left: `${selectionDraft.left}px`,
+                }}
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  commitComment();
+                }}
               >
-                <svg
-                  className="selection-popover__submit-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
+                <button
+                  type="button"
+                  className="selection-popover__floating-action selection-popover__floating-action--dismiss"
+                  aria-label="Close comment box"
+                  onClick={() => {
+                    setSelectionDraft(null);
+                    setCommentText('');
+                  }}
                 >
-                  <line
-                    x1="12"
-                    y1="19"
-                    x2="12"
-                    y2="5"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                  <svg
+                    className="selection-popover__floating-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M18 6L6 18"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M6 6L18 18"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+                <label className="sr-only" htmlFor="comment-draft">
+                  Comment for the selected text
+                </label>
+                <div className="selection-popover__surface">
+                  <textarea
+                    id="comment-draft"
+                    value={commentText}
+                    onChange={(event) => setCommentText(event.target.value)}
+                    placeholder="Explain the revision the agent should make here."
+                    rows={3}
                   />
-                  <polyline
-                    points="5 12 12 5 19 12"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
+                  {commentText.trim() ? (
+                    <button
+                      type="submit"
+                      className="selection-popover__submit"
+                      aria-label="Queue comment"
+                      disabled={!commentText.trim()}
+                    >
+                      <svg
+                        className="selection-popover__submit-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <line
+                          x1="12"
+                          y1="19"
+                          x2="12"
+                          y2="5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <polyline
+                          points="5 12 12 5 19 12"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  ) : null}
+                </div>
+              </form>
             ) : null}
           </div>
-        </form>
-      ) : null}
+        </article>
+      </article>
     </section>
   );
 }
@@ -489,9 +559,10 @@ function getSelectableTextLength(fragment: DocumentFragment) {
 
 function measureCommentDecorations(
   reviewSurface: HTMLElement,
+  reviewContent: HTMLElement,
   pendingComments: PendingComment[]
 ): CommentDecoration[] {
-  const surfaceRect = reviewSurface.getBoundingClientRect();
+  const contentRect = reviewContent.getBoundingClientRect();
   const { laneLeft, laneTopMin } = getAnnotationLaneMetrics(reviewSurface);
   const cardGap = 12;
 
@@ -504,8 +575,8 @@ function measureCommentDecorations(
       return [];
     }
 
-    const start = resolveTextPosition(reviewSurface, comment.startOffset);
-    const end = resolveTextPosition(reviewSurface, comment.endOffset);
+    const start = resolveTextPosition(reviewContent, comment.startOffset);
+    const end = resolveTextPosition(reviewContent, comment.endOffset);
 
     if (!start || !end) {
       return [];
@@ -518,8 +589,8 @@ function measureCommentDecorations(
     const rects = Array.from(range.getClientRects())
       .filter((rect) => rect.width > 0 && rect.height > 0)
       .map((rect) => ({
-        top: rect.top - surfaceRect.top,
-        left: rect.left - surfaceRect.left,
+        top: rect.top - contentRect.top,
+        left: rect.left - contentRect.left,
         width: rect.width,
         height: rect.height,
       }));

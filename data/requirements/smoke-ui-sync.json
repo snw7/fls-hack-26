@@ -1,0 +1,64 @@
+{
+  "current_markdown": "# Requirement Brief\n\n## Users\n- End customers\n- Internal staff\n",
+  "current_revision": {
+    "createdAt": "2026-04-10T10:10:00Z",
+    "id": "rev-1",
+    "markdown": "# Requirement Brief\n\n## Users\n- End customers\n- Internal staff\n",
+    "source": "generated"
+  },
+  "exported_at": "2026-04-10T00:23:02.308069+00:00",
+  "latest_change_summary": [
+    "Created the first draft."
+  ],
+  "schema_version": 1,
+  "session": {
+    "changeSummary": [
+      "Created the first draft."
+    ],
+    "chatHistory": [
+      {
+        "content": "Describe the business need.",
+        "id": "assistant-1",
+        "role": "assistant",
+        "timestamp": "2026-04-10T10:00:00Z"
+      }
+    ],
+    "collectedContext": {
+      "business_context": null,
+      "functional_requirements": null,
+      "goal": "Provide a calculator.",
+      "non_functional_requirements": null,
+      "risks_and_dependencies": null,
+      "users": "End customers and internal staff"
+    },
+    "createdAt": "2026-04-10T10:00:00Z",
+    "language": "en",
+    "lastError": null,
+    "pendingComments": [
+      {
+        "commentText": "Clarify these are the MVP target users.",
+        "contextAfter": "",
+        "contextBefore": "",
+        "createdAt": "2026-04-10T10:11:00Z",
+        "endOffset": 40,
+        "id": "comment-1",
+        "selectedText": "End customers\nInternal staff",
+        "startOffset": 12
+      }
+    ],
+    "phase": "review",
+    "revisions": [
+      {
+        "createdAt": "2026-04-10T10:10:00Z",
+        "id": "rev-1",
+        "markdown": "# Requirement Brief\n\n## Users\n- End customers\n- Internal staff\n",
+        "source": "generated"
+      }
+    ],
+    "schemaVersion": 1,
+    "sessionId": "smoke-ui-sync",
+    "status": "ready",
+    "templateId": "business-requirements-v1",
+    "updatedAt": "2026-04-10T10:10:00Z"
+  }
+}

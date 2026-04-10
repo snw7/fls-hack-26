@@ -1,3 +1,4 @@
+import { createEmptyRequirementsContext } from '../data/template';
 import type {
   ChatMessage,
   DocumentRevision,
@@ -27,7 +28,7 @@ export function createInitialState(templateId: string): SessionState {
     ],
     revisions: [],
     pendingComments: [],
-    collectedContext: {},
+    collectedContext: createEmptyRequirementsContext(),
     changeSummary: [],
     lastError: null,
   };

@@ -1,4 +1,5 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -12,6 +13,9 @@ class Settings(BaseSettings):
     )
 
     service_name: str = "FI Agent Service"
+    service_version: str = "0.1.0"
+    backend_build_id: str = "dev"
+    requirements_export_dir: Path = Path("/app/data/requirements")
     openai_api_key: str | None = None
     openai_base_url: str | None = None
     openai_model: str = "gpt-5.4-mini"

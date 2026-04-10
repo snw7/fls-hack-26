@@ -298,6 +298,64 @@ button:disabled {
   white-space: pre-line;
 }
 
+.clarification-status {
+  margin: -4px 0 0;
+  color: var(--accent-deep);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.clarification-progress {
+  display: grid;
+  gap: 10px;
+}
+
+.clarification-progress__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.clarification-progress__action {
+  border: 1px solid rgba(50, 142, 203, 0.16);
+  border-radius: 999px;
+  min-height: 38px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.clarification-progress__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.clarification-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border: 1px solid rgba(119, 129, 141, 0.2);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.56);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.clarification-chip--filled {
+  border-color: rgba(27, 125, 75, 0.2);
+  background: rgba(27, 125, 75, 0.1);
+  color: var(--success-deep);
+}
+
 .message-list {
   display: grid;
   gap: 12px;
@@ -653,6 +711,47 @@ button:focus-visible {
     background-color 180ms ease;
 }
 
+.document-surface__save {
+  border: 1px solid rgba(27, 125, 75, 0.18);
+  border-radius: 999px;
+  min-height: 42px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--success-deep);
+  font-weight: 700;
+  box-shadow: 0 12px 24px rgba(27, 125, 75, 0.12);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.document-surface__save:hover {
+  transform: translateY(-1px);
+}
+
+.document-surface__save:disabled {
+  transform: none;
+}
+
+.document-surface__save-message {
+  margin: 0 0 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.document-surface__save-message--success {
+  color: var(--success-deep);
+}
+
+.document-surface__save-message--error {
+  color: var(--danger-deep);
+}
+
+.document-surface__content {
+  position: relative;
+}
+
 .document-surface__submit:hover {
   transform: translateY(-1px);
 }
@@ -766,7 +865,7 @@ button:focus-visible {
 }
 
 .selection-popover {
-  position: fixed;
+  position: absolute;
   width: min(320px, calc(100vw - 24px));
   padding: 18px;
   border: 1px solid rgba(123, 132, 144, 0.18);
@@ -774,6 +873,7 @@ button:focus-visible {
   background: rgba(245, 248, 252, 0.98);
   box-shadow: 0 28px 72px rgba(17, 20, 28, 0.22);
   overflow: visible;
+  z-index: 3;
 }
 
 .selection-popover textarea {
