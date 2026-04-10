@@ -7,6 +7,7 @@ services:
         VITE_DEFAULT_TEMPLATE_ID: "${VITE_DEFAULT_TEMPLATE_ID:-business-requirements-v1}"
         VITE_DISCOVERY_WEBHOOK_URL: "${VITE_DISCOVERY_WEBHOOK_URL:-/webhook/discovery-agent}"
         VITE_REVISION_WEBHOOK_URL: "${VITE_REVISION_WEBHOOK_URL:-/webhook/revision-agent}"
+        VITE_SESSION_EXPORT_URL_BASE: "${VITE_SESSION_EXPORT_URL_BASE:-/sessions}"
     depends_on:
       - backend
     ports:
@@ -15,9 +16,14 @@ services:
   backend:
     build:
       context: ./backend
+      args:
+        BACKEND_BUILD_ID: "${BACKEND_BUILD_ID:-dev}"
     ports:
       - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ./data/requirements:/app/data/requirements
     environment:
+      BACKEND_BUILD_ID: "${BACKEND_BUILD_ID:-dev}"
       OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
       OPENAI_BASE_URL: "${OPENAI_BASE_URL:-}"
       OPENAI_MODEL: "${OPENAI_MODEL:-gpt-5.4-mini}"

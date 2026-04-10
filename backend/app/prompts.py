@@ -11,10 +11,20 @@ def _format_chat_history(request: DiscoveryRequest) -> str:
 
 
 def build_discovery_messages(request: DiscoveryRequest) -> list[dict[str, str]]:
+    fields_spec = "\n".join(
+        f'          - "{f.key}": {f.description}'
+        for f in request.template.fields
+    ) if request.template.fields else ""
+
+    field_keys = [f.key for f in request.template.fields] if request.template.fields else []
+
     system_prompt = dedent(
         f"""
         You are a senior business analyst assistant working inside a regulated banking software environment.
-        Your job is to clarify requirements and decide whether enough information exists to create a first markdown draft.
+        Your job is to clarify requirements by gathering information for a set of predefined fields.
+
+        REQUIRED FIELDS (you must collect a value for every one of these):
+{fields_spec}
 
         Return exactly one JSON object with this shape:
         {{
@@ -22,15 +32,17 @@ def build_discovery_messages(request: DiscoveryRequest) -> list[dict[str, str]]:
           "assistant_message": "string",
           "document_ready": boolean,
           "markdown": "string or null",
-          "collected_context": {{"snake_case_key": "short fact"}}
+          "collected_context": {{{", ".join(f'"{k}": "value or null"' for k in field_keys)}}}
         }}
 
         Rules:
         - Return valid JSON only. No markdown fences. No commentary outside the JSON object.
-        - If the conversation is not sufficiently specified, set status to "needs_user_input", document_ready to false, markdown to null, and ask exactly one concrete next question.
-        - If the conversation is sufficient, set status to "ready", document_ready to true, and generate markdown that follows the provided template structure.
+        - collected_context MUST always contain ALL of the required field keys listed above.
+        - Set a field's value to the extracted fact when the conversation provides enough information for it. Set it to null when you do not yet have enough information.
+        - You may ONLY set status to "ready" and document_ready to true when EVERY required field in collected_context has a non-null, non-empty value. If any field is still null, you MUST set status to "needs_user_input" and ask about the missing information.
+        - When status is "needs_user_input", ask exactly one concrete question targeting the most important unfilled field.
+        - When status is "ready", generate markdown that follows the provided template structure.
         - Preserve the template headings unless the request clearly justifies a small structural adjustment.
-        - Keep collected_context compact, factual, and limited to the most relevant extracted facts.
         - Write assistant_message and markdown in {request.document_language.upper()}.
         """
     ).strip()
@@ -123,4 +135,3 @@ def build_revision_messages(request: RevisionRequest) -> list[dict[str, str]]:
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
-
