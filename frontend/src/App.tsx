@@ -18,6 +18,7 @@ import {
   callExportSession,
   callRevisionAgent,
 } from './lib/webhooks';
+import { createTranscription } from './lib/transcription';
 
 function toTimestamp(): string {
   return new Date().toISOString();
@@ -197,6 +198,10 @@ export default function App() {
     }
   }
 
+  function handleTranscribeAudio(audioFile: File) {
+    return createTranscription(runtimeConfig.transcriptionUrl, audioFile);
+  }
+
   function handleAddComment(
     comment: Parameters<typeof createPendingComment>[0]
   ) {
@@ -335,6 +340,7 @@ export default function App() {
           onChange={setComposerValue}
           onSubmit={handleSendMessage}
           onGenerateDraft={handleGenerateDraft}
+          transcribeAudio={handleTranscribeAudio}
         />
       ) : (
         <DocumentReviewPane

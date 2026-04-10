@@ -412,7 +412,7 @@ button:disabled {
 textarea {
   width: 100%;
   min-height: 184px;
-  padding: 22px 88px 24px 22px;
+  padding: 22px 146px 24px 22px;
   border: 1px solid rgba(123, 132, 144, 0.18);
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.92);
@@ -423,16 +423,26 @@ textarea {
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
-textarea:focus,
 button:focus-visible {
   outline: 3px solid rgba(50, 142, 203, 0.22);
   outline-offset: 2px;
 }
 
-.composer__submit {
+textarea:focus {
+  outline: none;
+}
+
+.composer__action-row {
   position: absolute;
   right: 18px;
   bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.composer__aux-button,
+.composer__submit {
   width: 48px;
   height: 48px;
   border: 1px solid rgba(50, 142, 203, 0.18);
@@ -448,6 +458,18 @@ button:focus-visible {
     background-color 180ms ease;
 }
 
+.composer__aux-button {
+  color: var(--muted);
+}
+
+.composer__aux-button svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+}
+
+.composer__aux-button:hover,
 .composer__submit:hover {
   transform: translateY(-1px);
 }
@@ -457,6 +479,69 @@ button:focus-visible {
   width: 18px;
   height: 18px;
   margin: 0 auto;
+}
+
+.composer__transcription-panel {
+  display: grid;
+  gap: 28px;
+  min-height: 184px;
+  padding: 26px 24px 22px;
+  border: 1px solid rgba(123, 132, 144, 0.18);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 247, 251, 0.96));
+  box-shadow:
+    var(--shadow-xl),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74);
+}
+
+.composer__recording-visual {
+  display: grid;
+  grid-template-columns: repeat(88, minmax(0, 1fr));
+  align-items: center;
+  gap: 1px;
+  min-height: 44px;
+  padding: 2px 0;
+}
+
+.composer__recording-bar {
+  align-self: center;
+  width: 100%;
+  min-height: 4px;
+  height: 28px;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(50, 142, 203, 0.98), rgba(50, 142, 203, 0.32));
+  transform-origin: center;
+  transition:
+    transform 90ms linear,
+    opacity 90ms linear;
+}
+
+.composer__transcription-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.composer__recording-copy {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+.composer__transcription-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.composer__transcription-error {
+  margin: 0;
+  color: #b42318;
+  font-size: 0.92rem;
 }
 
 .primary-button,
@@ -1032,12 +1117,24 @@ button:focus-visible {
 
   textarea {
     min-height: 160px;
-    padding-right: 78px;
+    padding-right: 22px;
+    padding-bottom: 92px;
   }
 
+  .composer__action-row,
+  .composer__transcription-footer {
+    position: static;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .composer__transcription-panel {
+    min-height: 160px;
+    gap: 18px;
+  }
+
+  .composer__aux-button,
   .composer__submit {
-    right: 14px;
-    bottom: 14px;
     width: 46px;
     height: 46px;
   }

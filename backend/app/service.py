@@ -2,6 +2,7 @@ import json
 import re
 from typing import Any, Protocol
 
+import httpx
 from openai import OpenAI
 
 from .prompts import build_discovery_messages, build_revision_messages
@@ -11,6 +12,7 @@ from .schemas import (
     RevisionErrorResponse,
     RevisionRequest,
     RevisionUpdatedResponse,
+    TranscriptionResponse,
 )
 from .settings import Settings
 
@@ -25,6 +27,13 @@ class AgentService(Protocol):
     def run_revision(
         self, request: RevisionRequest
     ) -> RevisionUpdatedResponse | RevisionErrorResponse: ...
+
+    def transcribe_audio(
+        self,
+        filename: str,
+        content_type: str | None,
+        data: bytes,
+    ) -> TranscriptionResponse: ...
 
 
 def _normalize_for_match(value: str) -> str:
@@ -316,3 +325,58 @@ class OpenAIAgentService:
         response = RevisionUpdatedResponse.model_validate(payload)
         response.updated_markdown = _sanitize_markdown(response.updated_markdown) or ""
         return response
+
+    def transcribe_audio(
+        self,
+        filename: str,
+        content_type: str | None,
+        data: bytes,
+    ) -> TranscriptionResponse:
+        self._require_client()
+        base_url = (
+            self._settings.openai_base_url or "https://api.openai.com/v1"
+        ).rstrip("/")
+        url = f"{base_url}/audio/transcriptions"
+
+        try:
+            response = httpx.post(
+                url,
+                headers={
+                    "Authorization": f"Bearer {self._settings.openai_api_key}",
+                },
+                data={"model": self._settings.openai_transcription_model},
+                files={
+                    "file": (filename, data, content_type or "audio/webm"),
+                },
+                timeout=90.0,
+            )
+        except httpx.HTTPError as exc:
+            raise AgentServiceError(
+                "The transcription request failed before OpenAI returned a response."
+            ) from exc
+
+        payload: Any
+        try:
+            payload = response.json()
+        except ValueError as exc:
+            raise AgentServiceError(
+                "The transcription service returned a non-JSON response."
+            ) from exc
+
+        if response.is_error:
+            error_message = "The transcription request failed."
+            if (
+                isinstance(payload, dict)
+                and isinstance(payload.get("error"), dict)
+                and isinstance(payload["error"].get("message"), str)
+            ):
+                error_message = payload["error"]["message"]
+            raise AgentServiceError(error_message)
+
+        if not isinstance(payload, dict) or not isinstance(payload.get("text"), str):
+            raise AgentServiceError("The transcription response did not include text.")
+
+        usage = payload.get("usage")
+        usage_payload = usage if isinstance(usage, dict) else None
+
+        return TranscriptionResponse(text=payload["text"], usage=usage_payload)

@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     openai_api_key: str | None = None
     openai_base_url: str | None = None
     openai_model: str = "gpt-5.4-mini"
+    openai_transcription_model: str = "gpt-4o-transcribe"
     openai_reasoning_effort: str = "low"
     openai_max_output_tokens_discovery: int = Field(default=2200, ge=256)
     openai_max_output_tokens_revision: int = Field(default=3600, ge=256)

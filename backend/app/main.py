@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import Response
+from fastapi import File, UploadFile
 
 from .dependencies import get_agent_service
 from .schemas import (
@@ -14,6 +15,7 @@ from .schemas import (
     RevisionErrorResponse,
     RevisionRequest,
     RevisionUpdatedResponse,
+    TranscriptionResponse,
 )
 from .service import AgentService, AgentServiceError
 from .settings import get_settings
@@ -83,7 +85,6 @@ def revision_agent(
             detail="The revision agent failed unexpectedly.",
         ) from exc
 
-
 @app.post("/sessions/{session_id}/export-json", response_model=ExportSessionResponse)
 def export_session_json(
     session_id: str,
@@ -122,3 +123,28 @@ def export_session_json(
         file_path=str(file_path),
         saved_at=saved_at,
     )
+
+
+@app.post("/audio/transcriptions", response_model=TranscriptionResponse)
+async def create_transcription(
+    file: UploadFile = File(...),
+    agent_service: AgentService = Depends(get_agent_service),
+) -> TranscriptionResponse:
+    audio = await file.read()
+
+    if not audio:
+        raise HTTPException(status_code=400, detail="The uploaded audio file was empty.")
+
+    try:
+        return agent_service.transcribe_audio(
+            filename=file.filename or "recording.webm",
+            content_type=file.content_type,
+            data=audio,
+        )
+    except AgentServiceError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except Exception as exc:  # pragma: no cover - defensive fallback
+        raise HTTPException(
+            status_code=502,
+            detail="The transcription request failed unexpectedly.",
+        ) from exc

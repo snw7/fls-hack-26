@@ -9,6 +9,7 @@ from app.schemas import (
     DiscoveryResponse,
     RevisionErrorResponse,
     RevisionUpdatedResponse,
+    TranscriptionResponse,
 )
 
 
@@ -39,6 +40,11 @@ class FakeAgentService:
             assistant_message="I updated the draft based on the submitted comments.",
             updated_markdown="# Draft\n\n## Goal\n\nCreate an agent-assisted workflow.\n",
             change_summary=["Expanded the goal section."],
+        )
+
+    def transcribe_audio(self, filename, content_type, data):
+        return TranscriptionResponse(
+            text=f"Transcript from {filename} ({content_type}, {len(data)} bytes)."
         )
 
 
@@ -389,5 +395,23 @@ def test_revision_endpoint_returns_updated_markdown():
 
     assert response.status_code == 200
     assert response.json()["status"] == "updated"
+
+    app.dependency_overrides.clear()
+
+
+def test_transcription_endpoint_returns_text():
+    app.dependency_overrides[get_agent_service] = lambda: FakeAgentService()
+    client = TestClient(app)
+
+    response = client.post(
+        "/audio/transcriptions",
+        files={
+            "file": ("recording.webm", b"audio-bytes", "audio/webm"),
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["text"] == "Transcript from recording.webm (audio/webm, 11 bytes)."
 
     app.dependency_overrides.clear()

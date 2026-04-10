@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -123,6 +123,11 @@ class ExportSessionResponse(StrictModel):
     session_id: str
     file_path: str
     saved_at: str
+
+
+class TranscriptionResponse(StrictModel):
+    text: str
+    usage: dict[str, Any] | None = None
 
 
 class HealthResponse(StrictModel):
