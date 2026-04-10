@@ -1,0 +1,14 @@
+services:
+  demo-backend:
+    build:
+      context: ./fls-hack-demo-backend
+    ports:
+      - "5000:5000"
+
+  demo-frontend:
+    build:
+      context: ./fls-hack-demo-frontend
+    depends_on:
+      - demo-backend
+    ports:
+      - "3001:80"

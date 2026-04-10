@@ -1,0 +1,6 @@
+[submodule "fls-hack-demo-frontend"]
+	path = fls-hack-demo-frontend
+	url = https://github.com/snw7/fls-hack-demo-frontend.git
+[submodule "fls-hack-demo-backend"]
+	path = fls-hack-demo-backend
+	url = https://github.com/snw7/fls-hack-demo-backend.git
