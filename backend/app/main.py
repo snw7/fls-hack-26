@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timezone
 
+import httpx
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import Response
 from fastapi import File, UploadFile
@@ -26,6 +27,49 @@ app = FastAPI(
     title=settings.service_name,
     version=settings.service_version,
 )
+
+
+def _forward_export_payload(payload: dict) -> None:
+    if not settings.n8n_export_webhook_url:
+        return
+
+    headers = {"Content-Type": "application/json"}
+    if settings.n8n_export_webhook_secret:
+        headers[settings.n8n_export_webhook_secret_header] = (
+            settings.n8n_export_webhook_secret
+        )
+
+    try:
+        response = httpx.post(
+            settings.n8n_export_webhook_url,
+            headers=headers,
+            json=payload,
+            timeout=30.0,
+        )
+    except httpx.HTTPError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail="The requirements JSON was saved locally but could not be sent to the configured webhook.",
+        ) from exc
+
+    if response.is_error:
+        detail = (
+            "The requirements JSON was saved locally but the configured webhook rejected it."
+        )
+        try:
+            response_payload = response.json()
+        except ValueError:
+            response_payload = None
+
+        if isinstance(response_payload, dict):
+            if isinstance(response_payload.get("message"), str):
+                detail = response_payload["message"]
+            elif isinstance(response_payload.get("error"), str):
+                detail = response_payload["error"]
+        elif response.text:
+            detail = response.text
+
+        raise HTTPException(status_code=503, detail=detail)
 
 
 @app.middleware("http")
@@ -116,6 +160,7 @@ def export_session_json(
         json.dump(payload, handle, ensure_ascii=False, indent=2, sort_keys=True)
         handle.write("\n")
     tmp_path.replace(file_path)
+    _forward_export_payload(payload)
 
     return ExportSessionResponse(
         status="saved",

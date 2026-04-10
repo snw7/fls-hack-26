@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     service_version: str = "0.1.0"
     backend_build_id: str = "dev"
     requirements_export_dir: Path = Path("/app/data/requirements")
+    n8n_export_webhook_url: str | None = None
+    n8n_export_webhook_secret: str | None = None
+    n8n_export_webhook_secret_header: str = "secret"
     openai_api_key: str | None = None
     openai_base_url: str | None = None
     openai_model: str = "gpt-5.4-mini"

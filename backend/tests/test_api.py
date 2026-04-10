@@ -1,7 +1,9 @@
 import json
 from pathlib import Path
+from unittest.mock import Mock
 
 from fastapi.testclient import TestClient
+import httpx
 
 from app.dependencies import get_agent_service
 from app.main import app, settings as app_settings
@@ -180,7 +182,9 @@ def test_health_endpoint_exposes_version_and_build_headers():
 def test_export_session_writes_json_file(tmp_path):
     client = TestClient(app)
     original_dir = app_settings.requirements_export_dir
+    original_webhook_url = app_settings.n8n_export_webhook_url
     app_settings.requirements_export_dir = tmp_path
+    app_settings.n8n_export_webhook_url = None
 
     response = client.post(
         "/sessions/session-123/export-json",
@@ -248,12 +252,15 @@ def test_export_session_writes_json_file(tmp_path):
     assert saved_payload["latest_change_summary"] == ["Created the first draft."]
 
     app_settings.requirements_export_dir = original_dir
+    app_settings.n8n_export_webhook_url = original_webhook_url
 
 
 def test_export_session_rejects_mismatched_session_id(tmp_path):
     client = TestClient(app)
     original_dir = app_settings.requirements_export_dir
+    original_webhook_url = app_settings.n8n_export_webhook_url
     app_settings.requirements_export_dir = tmp_path
+    app_settings.n8n_export_webhook_url = None
 
     response = client.post(
         "/sessions/session-abc/export-json",
@@ -288,12 +295,15 @@ def test_export_session_rejects_mismatched_session_id(tmp_path):
     assert response.json()["detail"] == "Session ID in path does not match request body."
 
     app_settings.requirements_export_dir = original_dir
+    app_settings.n8n_export_webhook_url = original_webhook_url
 
 
 def test_export_session_rejects_malformed_payload(tmp_path):
     client = TestClient(app)
     original_dir = app_settings.requirements_export_dir
+    original_webhook_url = app_settings.n8n_export_webhook_url
     app_settings.requirements_export_dir = tmp_path
+    app_settings.n8n_export_webhook_url = None
 
     response = client.post(
         "/sessions/session-123/export-json",
@@ -329,6 +339,62 @@ def test_export_session_rejects_malformed_payload(tmp_path):
     assert response.json()["detail"][0]["loc"] == ["body", "session", "unexpected"]
 
     app_settings.requirements_export_dir = original_dir
+    app_settings.n8n_export_webhook_url = original_webhook_url
+
+
+def test_export_session_posts_saved_payload_to_webhook(tmp_path, monkeypatch):
+    client = TestClient(app)
+    original_dir = app_settings.requirements_export_dir
+    original_webhook_url = app_settings.n8n_export_webhook_url
+    original_webhook_secret = app_settings.n8n_export_webhook_secret
+    original_webhook_header = app_settings.n8n_export_webhook_secret_header
+    app_settings.requirements_export_dir = tmp_path
+    app_settings.n8n_export_webhook_url = "https://n8n.example/webhook"
+    app_settings.n8n_export_webhook_secret = "test-secret"
+    app_settings.n8n_export_webhook_secret_header = "secret"
+
+    post_mock = Mock(return_value=httpx.Response(status_code=200, request=httpx.Request("POST", "https://n8n.example/webhook")))
+    monkeypatch.setattr("app.main.httpx.post", post_mock)
+
+    response = client.post(
+        "/sessions/session-123/export-json",
+        json={
+            "session": {
+                "schemaVersion": 1,
+                "sessionId": "session-123",
+                "phase": "review",
+                "status": "ready",
+                "templateId": "business-requirements-v1",
+                "language": "en",
+                "createdAt": "2026-04-10T10:00:00Z",
+                "updatedAt": "2026-04-10T10:05:00Z",
+                "chatHistory": [],
+                "revisions": [],
+                "pendingComments": [],
+                "collectedContext": {
+                    "goal": "Reduce manual requirement intake.",
+                    "business_context": None,
+                    "users": None,
+                    "functional_requirements": None,
+                    "non_functional_requirements": None,
+                    "risks_and_dependencies": None,
+                },
+                "changeSummary": [],
+                "lastError": None,
+            }
+        },
+    )
+
+    assert response.status_code == 200
+    post_mock.assert_called_once()
+    _, kwargs = post_mock.call_args
+    assert kwargs["headers"]["secret"] == "test-secret"
+    assert kwargs["json"]["session"]["sessionId"] == "session-123"
+
+    app_settings.requirements_export_dir = original_dir
+    app_settings.n8n_export_webhook_url = original_webhook_url
+    app_settings.n8n_export_webhook_secret = original_webhook_secret
+    app_settings.n8n_export_webhook_secret_header = original_webhook_header
 
 
 def test_revision_endpoint_returns_selected_text_error_without_model_call():

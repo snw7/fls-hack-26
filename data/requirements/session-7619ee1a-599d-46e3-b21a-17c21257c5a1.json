@@ -1,0 +1,127 @@
+{
+  "current_markdown": "# Requirement Brief\n\n## Goal\nProvide a feature that calculates the loan duration based on monthly rate, loan amount, and interest rate.\n\n## Business Context\nThis is a quality-of-life feature for customers and internal staff. It is intended to improve the loan estimation process and make it easier to determine loan duration quickly.\n\n## Users\nCustomers.\n\n## Functional Requirements\n- The system must calculate loan duration using monthly rate, loan amount, and interest rate as inputs.\n- The system must return the calculated loan duration to the user.\n- No additional calculation rules have been specified.\n\n## Non-Functional Requirements\n- Performance is a key requirement.\n- The feature must support security expectations required to maintain certification.\n- The feature must support auditability.\n- The feature must comply with certification-related compliance requirements.\n\n## Risks and Dependencies\n- No known risks, blockers, or external dependencies have been identified at this time.\n\n## Open Questions\n- None identified at this time.",
+  "current_revision": {
+    "createdAt": "2026-04-10T02:26:02.092Z",
+    "id": "rev-7fe65a87-0dae-4f6a-800c-80ebd77240eb",
+    "markdown": "# Requirement Brief\n\n## Goal\nProvide a feature that calculates the loan duration based on monthly rate, loan amount, and interest rate.\n\n## Business Context\nThis is a quality-of-life feature for customers and internal staff. It is intended to improve the loan estimation process and make it easier to determine loan duration quickly.\n\n## Users\nCustomers.\n\n## Functional Requirements\n- The system must calculate loan duration using monthly rate, loan amount, and interest rate as inputs.\n- The system must return the calculated loan duration to the user.\n- No additional calculation rules have been specified.\n\n## Non-Functional Requirements\n- Performance is a key requirement.\n- The feature must support security expectations required to maintain certification.\n- The feature must support auditability.\n- The feature must comply with certification-related compliance requirements.\n\n## Risks and Dependencies\n- No known risks, blockers, or external dependencies have been identified at this time.\n\n## Open Questions\n- None identified at this time.",
+    "source": "generated"
+  },
+  "exported_at": "2026-04-10T02:26:08.705468+00:00",
+  "latest_change_summary": [],
+  "schema_version": 1,
+  "session": {
+    "changeSummary": [],
+    "chatHistory": [
+      {
+        "content": "Describe the business requirement, the target users, and the outcome you need.\nI will turn that into a structured markdown brief you can refine.",
+        "id": "assistant-9fff5d3d-0e79-46f2-8409-1001c105ac61",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:19:33.902Z"
+      },
+      {
+        "content": "I want a new feature that calculates the loan duration based on monthly rate, loan amount and interest rate.",
+        "id": "user-b2705f57-cdbb-482e-af22-147888a4b4ab",
+        "role": "user",
+        "timestamp": "2026-04-10T02:23:50.865Z"
+      },
+      {
+        "content": "What is the business reason for adding this loan duration calculation feature, and what problem or process will it improve?",
+        "id": "assistant-5418258a-5adf-4bce-a743-7ca343162f01",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:23:52.662Z"
+      },
+      {
+        "content": "Quality-of-Life-Feature for customers and internal staff.",
+        "id": "user-761a5b47-6ba0-41f8-9b12-aedd75e4f334",
+        "role": "user",
+        "timestamp": "2026-04-10T02:24:08.898Z"
+      },
+      {
+        "content": "What non-functional requirements should this feature meet, such as performance, security, auditability, or regulatory/compliance constraints?",
+        "id": "assistant-5906e98a-585a-42a5-b386-d75645cd0b23",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:24:10.924Z"
+      },
+      {
+        "content": "Performance is a big issue, security because we have certification we want to uphold and audibility and compliance also for that certification that we need for this feature.",
+        "id": "user-c78401db-e48e-4624-a91a-39009fc5056c",
+        "role": "user",
+        "timestamp": "2026-04-10T02:24:30.602Z"
+      },
+      {
+        "content": "What known risks, blockers, or external dependencies should be captured for this loan duration calculation feature?",
+        "id": "assistant-75f6ae67-ce21-4d4a-afb8-2a7435f3af12",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:24:32.893Z"
+      },
+      {
+        "content": "none at the moment",
+        "id": "user-03a2807a-e6c1-490f-9c0e-3d04b0792466",
+        "role": "user",
+        "timestamp": "2026-04-10T02:25:18.071Z"
+      },
+      {
+        "content": "What exactly should the loan duration calculation feature do, including the inputs it accepts, the calculation rules it follows, and the output it should return?",
+        "id": "assistant-43b96f22-c7c9-46fa-9696-85aa8d14dfe9",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:25:20.417Z"
+      },
+      {
+        "content": "no specific additional rules",
+        "id": "user-ed392295-2673-40e4-85a3-a20017a72a9d",
+        "role": "user",
+        "timestamp": "2026-04-10T02:25:36.963Z"
+      },
+      {
+        "content": "Who are the target users or actors for this loan duration calculation feature (for example, customers, branch staff, relationship managers, or back-office users)?",
+        "id": "assistant-775638fc-fb25-419e-a382-9d1571d2c383",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:25:38.851Z"
+      },
+      {
+        "content": "Who are the target users or actors for this loan duration calculation feature (for example, customers, branch staff, relationship managers, or back-office users)?",
+        "id": "assistant-1d911deb-4228-4658-a1b1-cf62e07a449a",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:25:46.162Z"
+      },
+      {
+        "content": "customers",
+        "id": "user-f3ab0478-5633-4565-88ea-165b58fee22c",
+        "role": "user",
+        "timestamp": "2026-04-10T02:25:57.571Z"
+      },
+      {
+        "content": "Drafting the requirement brief now.",
+        "id": "assistant-08708fdd-9a19-49f4-b49f-75b6640d21b3",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:26:02.091Z"
+      }
+    ],
+    "collectedContext": {
+      "business_context": "This is a quality-of-life feature for customers and internal staff. It is intended to improve the loan estimation process and make it easier to determine loan duration quickly.",
+      "functional_requirements": "The system must calculate loan duration using monthly rate, loan amount, and interest rate as inputs. The system must return the calculated loan duration to the user. No additional calculation rules have been specified.",
+      "goal": "Provide a feature that calculates the loan duration based on monthly rate, loan amount, and interest rate.",
+      "non_functional_requirements": "Performance is a key requirement. The feature must support security expectations required to maintain certification. The feature must support auditability. The feature must comply with certification-related compliance requirements.",
+      "risks_and_dependencies": "No known risks, blockers, or external dependencies have been identified at this time.",
+      "users": "Customers."
+    },
+    "createdAt": "2026-04-10T02:19:33.901Z",
+    "language": "en",
+    "lastError": null,
+    "pendingComments": [],
+    "phase": "review",
+    "revisions": [
+      {
+        "createdAt": "2026-04-10T02:26:02.092Z",
+        "id": "rev-7fe65a87-0dae-4f6a-800c-80ebd77240eb",
+        "markdown": "# Requirement Brief\n\n## Goal\nProvide a feature that calculates the loan duration based on monthly rate, loan amount, and interest rate.\n\n## Business Context\nThis is a quality-of-life feature for customers and internal staff. It is intended to improve the loan estimation process and make it easier to determine loan duration quickly.\n\n## Users\nCustomers.\n\n## Functional Requirements\n- The system must calculate loan duration using monthly rate, loan amount, and interest rate as inputs.\n- The system must return the calculated loan duration to the user.\n- No additional calculation rules have been specified.\n\n## Non-Functional Requirements\n- Performance is a key requirement.\n- The feature must support security expectations required to maintain certification.\n- The feature must support auditability.\n- The feature must comply with certification-related compliance requirements.\n\n## Risks and Dependencies\n- No known risks, blockers, or external dependencies have been identified at this time.\n\n## Open Questions\n- None identified at this time.",
+        "source": "generated"
+      }
+    ],
+    "schemaVersion": 1,
+    "sessionId": "session-7619ee1a-599d-46e3-b21a-17c21257c5a1",
+    "status": "ready",
+    "templateId": "business-requirements-v1",
+    "updatedAt": "2026-04-10T02:26:02.092Z"
+  }
+}

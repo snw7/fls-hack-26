@@ -24,6 +24,9 @@ services:
       - ./data/requirements:/app/data/requirements
     environment:
       BACKEND_BUILD_ID: "${BACKEND_BUILD_ID:-dev}"
+      N8N_EXPORT_WEBHOOK_URL: "${N8N_EXPORT_WEBHOOK_URL:-}"
+      N8N_EXPORT_WEBHOOK_SECRET: "${N8N_EXPORT_WEBHOOK_SECRET:-}"
+      N8N_EXPORT_WEBHOOK_SECRET_HEADER: "${N8N_EXPORT_WEBHOOK_SECRET_HEADER:-secret}"
       OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
       OPENAI_BASE_URL: "${OPENAI_BASE_URL:-}"
       OPENAI_MODEL: "${OPENAI_MODEL:-gpt-5.4-mini}"
