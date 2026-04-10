@@ -1,0 +1,187 @@
+{
+  "current_markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that enables customers to estimate loan duration based on monthly rate, loan amount, and interest rate using the same calculation logic as the existing loan calculator.\n\n## Business Context\nThis change is needed as a quality-of-life improvement for customers. It supports a better self-service experience by helping customers estimate loan duration more easily, with greater confidence, and with less effort when planning or comparing loan options. By making the calculation more accessible and consistent with the existing loan calculator, customers can reduce the need for manual calculations, avoid uncertainty, and spend less time seeking support assistance.\n\n## Users\nCustomers, management, and internal staff\n\n## Functional Requirements\n- The system must calculate loan duration using one monthly rate, one loan amount, and one interest rate.\n- The calculation must use the logic from the existing loan calculator.\n- The output must be the loan duration expressed in months.\n- The result must be rounded to 2 decimal places.\n\n## Non-Functional Requirements\n- Security\n\n## Risks and Dependencies\n- Dependency on the existing loan calculator calculation logic.\n- Risk of inconsistency if the existing calculator logic changes or is interpreted differently.\n\n## Open Questions\n- None at this time.",
+  "current_revision": {
+    "createdAt": "2026-04-10T00:53:14.085Z",
+    "id": "rev-a239f6c0-0698-44c4-a124-7dde783e4ee5",
+    "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that enables customers to estimate loan duration based on monthly rate, loan amount, and interest rate using the same calculation logic as the existing loan calculator.\n\n## Business Context\nThis change is needed as a quality-of-life improvement for customers. It supports a better self-service experience by helping customers estimate loan duration more easily, with greater confidence, and with less effort when planning or comparing loan options. By making the calculation more accessible and consistent with the existing loan calculator, customers can reduce the need for manual calculations, avoid uncertainty, and spend less time seeking support assistance.\n\n## Users\nCustomers, management, and internal staff\n\n## Functional Requirements\n- The system must calculate loan duration using one monthly rate, one loan amount, and one interest rate.\n- The calculation must use the logic from the existing loan calculator.\n- The output must be the loan duration expressed in months.\n- The result must be rounded to 2 decimal places.\n\n## Non-Functional Requirements\n- Security\n\n## Risks and Dependencies\n- Dependency on the existing loan calculator calculation logic.\n- Risk of inconsistency if the existing calculator logic changes or is interpreted differently.\n\n## Open Questions\n- None at this time.",
+    "source": "revised"
+  },
+  "exported_at": "2026-04-10T00:53:20.642551+00:00",
+  "latest_change_summary": [
+    "Expanded the Business Context text to be approximately twice as long.",
+    "Preserved the original intent while adding more detail about self-service benefits and support reduction."
+  ],
+  "schema_version": 1,
+  "session": {
+    "changeSummary": [
+      "Expanded the Business Context text to be approximately twice as long.",
+      "Preserved the original intent while adding more detail about self-service benefits and support reduction."
+    ],
+    "chatHistory": [
+      {
+        "content": "Describe the business requirement, the target users, and the outcome you need.\nI will turn that into a structured markdown brief you can refine.",
+        "id": "assistant-58dce498-59ce-448e-af3b-cb5254aab401",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:45:14.394Z"
+      },
+      {
+        "content": "I want a new feature that calculates the loan duration based on monthly rate, loan amount and interest rate.",
+        "id": "user-bf0f3bdc-5292-46d1-8648-5d8908414e83",
+        "role": "user",
+        "timestamp": "2026-04-10T00:45:20.250Z"
+      },
+      {
+        "content": "What is the business reason for adding this loan duration calculation feature, and which process or product will it support?",
+        "id": "assistant-6297e5db-6c99-4a23-8e55-71bf0e03cb81",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:45:22.470Z"
+      },
+      {
+        "content": "quality of life improvements for customers.",
+        "id": "user-9c369226-6489-4896-a7e5-d04cadbd98af",
+        "role": "user",
+        "timestamp": "2026-04-10T00:46:17.459Z"
+      },
+      {
+        "content": "Who are the target users for this feature (for example, customers, loan officers, or internal support staff)?",
+        "id": "assistant-b9f2b35b-0fc1-4396-b42c-843a041543c5",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:46:20.609Z"
+      },
+      {
+        "content": "customers",
+        "id": "user-5c9a0af2-930a-42d1-ae25-1709cb864d00",
+        "role": "user",
+        "timestamp": "2026-04-10T00:47:08.391Z"
+      },
+      {
+        "content": "What exactly should the feature do to calculate the loan duration, including any input validations, calculation rules, and the expected output format?",
+        "id": "assistant-01886b6e-8ca8-45ff-83bc-b07c9fb8b6a6",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:47:10.056Z"
+      },
+      {
+        "content": "expected output format should just be the months, with 2 decimals rounded",
+        "id": "user-3dd087ce-e89c-42fd-acfe-f6d2a9fd1b19",
+        "role": "user",
+        "timestamp": "2026-04-10T00:47:29.541Z"
+      },
+      {
+        "content": "What are the exact calculation rules and input validations for the loan duration feature, including how monthly rate, loan amount, and interest rate should be used to compute the months?",
+        "id": "assistant-b61321f2-0809-4289-8fdb-0c76cf772909",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:47:31.454Z"
+      },
+      {
+        "content": "1 monthly rate, 1 loan amount, 1 interest rate",
+        "id": "user-7e541555-aee6-4576-bac1-4f8da2257bac",
+        "role": "user",
+        "timestamp": "2026-04-10T00:47:54.545Z"
+      },
+      {
+        "content": "What non-functional requirements should this feature meet, such as performance, security, compliance, or calculation accuracy/tolerance expectations?",
+        "id": "assistant-6ea73bd8-774c-4d16-863c-a8756e883b92",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:47:57.263Z"
+      },
+      {
+        "content": "security",
+        "id": "user-69e652e2-cac3-4469-a48d-725f6f7a45f5",
+        "role": "user",
+        "timestamp": "2026-04-10T00:48:02.378Z"
+      },
+      {
+        "content": "What is the exact formula or calculation rule the feature should use to derive the loan duration from the monthly rate, loan amount, and interest rate, including any validation rules for those inputs?",
+        "id": "assistant-e7f7458c-6a20-4c27-9f44-0789b87f9fcd",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:48:04.430Z"
+      },
+      {
+        "content": "none",
+        "id": "user-3d3ed247-1d65-4d01-9570-abe802fa4635",
+        "role": "user",
+        "timestamp": "2026-04-10T00:48:08.086Z"
+      },
+      {
+        "content": "Are there any known risks, blockers, or external dependencies for this loan duration calculation feature (for example, regulatory review, data source availability, or downstream system integration)?",
+        "id": "assistant-6c3998b9-970a-40b0-ba59-950e7e185380",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:48:11.594Z"
+      },
+      {
+        "content": "use calculation from existing loan calculator",
+        "id": "user-41760c26-3f3c-458d-b101-f0496907cace",
+        "role": "user",
+        "timestamp": "2026-04-10T00:48:25.274Z"
+      },
+      {
+        "content": "I have enough information to draft the requirement brief.",
+        "id": "assistant-c65b182f-1f5c-43c7-b5fc-559540fe12dc",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:48:29.215Z"
+      },
+      {
+        "content": "Updated the Users section to include management and internal staff alongside customers.",
+        "id": "assistant-aa7d133e-2608-4a07-8962-4cf9a6b66ff0",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:49:09.328Z"
+      },
+      {
+        "content": "Updated the Goal and Business Context sections to provide more detail and clarity while preserving the document structure.",
+        "id": "assistant-f6435e13-5ce9-404d-9b84-f45e9cee6181",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:52:49.617Z"
+      },
+      {
+        "content": "Updated the Business Context section to expand the rationale and make it roughly twice as long while preserving the original meaning.",
+        "id": "assistant-33ce6d11-c981-4164-a4e0-053f234e88c6",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:53:14.085Z"
+      }
+    ],
+    "collectedContext": {
+      "business_context": "quality of life improvements for customers.",
+      "functional_requirements": "The feature should calculate loan duration using one monthly rate, one loan amount, and one interest rate; the output should be months rounded to 2 decimals; use the calculation from the existing loan calculator.",
+      "goal": "I want a new feature that calculates the loan duration based on monthly rate, loan amount and interest rate.",
+      "non_functional_requirements": "security",
+      "risks_and_dependencies": "use calculation from existing loan calculator",
+      "users": "customers"
+    },
+    "createdAt": "2026-04-10T00:45:14.394Z",
+    "language": "en",
+    "lastError": null,
+    "pendingComments": [],
+    "phase": "review",
+    "revisions": [
+      {
+        "createdAt": "2026-04-10T00:48:29.218Z",
+        "id": "rev-20ea42d3-298f-4c30-af91-3bc58968aabe",
+        "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates the loan duration for customers based on monthly rate, loan amount, and interest rate.\n\n## Business Context\nThis change is needed as a quality-of-life improvement for customers. It supports a better self-service experience by helping customers estimate loan duration more easily.\n\n## Users\nCustomers\n\n## Functional Requirements\n- The system must calculate loan duration using one monthly rate, one loan amount, and one interest rate.\n- The calculation must use the logic from the existing loan calculator.\n- The output must be the loan duration expressed in months.\n- The result must be rounded to 2 decimal places.\n\n## Non-Functional Requirements\n- Security\n\n## Risks and Dependencies\n- Dependency on the existing loan calculator calculation logic.\n- Risk of inconsistency if the existing calculator logic changes or is interpreted differently.\n\n## Open Questions\n- None at this time.",
+        "source": "generated"
+      },
+      {
+        "createdAt": "2026-04-10T00:49:09.328Z",
+        "id": "rev-9c0cace2-bda9-458c-b519-df108d3c77a8",
+        "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates the loan duration for customers based on monthly rate, loan amount, and interest rate.\n\n## Business Context\nThis change is needed as a quality-of-life improvement for customers. It supports a better self-service experience by helping customers estimate loan duration more easily.\n\n## Users\nCustomers, management, and internal staff\n\n## Functional Requirements\n- The system must calculate loan duration using one monthly rate, one loan amount, and one interest rate.\n- The calculation must use the logic from the existing loan calculator.\n- The output must be the loan duration expressed in months.\n- The result must be rounded to 2 decimal places.\n\n## Non-Functional Requirements\n- Security\n\n## Risks and Dependencies\n- Dependency on the existing loan calculator calculation logic.\n- Risk of inconsistency if the existing calculator logic changes or is interpreted differently.\n\n## Open Questions\n- None at this time.",
+        "source": "revised"
+      },
+      {
+        "createdAt": "2026-04-10T00:52:49.617Z",
+        "id": "rev-9bcfe5ed-bf14-4bc4-a69b-5b2cf96bf062",
+        "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that enables customers to estimate loan duration based on monthly rate, loan amount, and interest rate using the same calculation logic as the existing loan calculator.\n\n## Business Context\nThis change is needed as a quality-of-life improvement for customers. It supports a better self-service experience by helping customers estimate loan duration more easily and with greater confidence, reducing the need for manual calculations or support assistance.\n\n## Users\nCustomers, management, and internal staff\n\n## Functional Requirements\n- The system must calculate loan duration using one monthly rate, one loan amount, and one interest rate.\n- The calculation must use the logic from the existing loan calculator.\n- The output must be the loan duration expressed in months.\n- The result must be rounded to 2 decimal places.\n\n## Non-Functional Requirements\n- Security\n\n## Risks and Dependencies\n- Dependency on the existing loan calculator calculation logic.\n- Risk of inconsistency if the existing calculator logic changes or is interpreted differently.\n\n## Open Questions\n- None at this time.",
+        "source": "revised"
+      },
+      {
+        "createdAt": "2026-04-10T00:53:14.085Z",
+        "id": "rev-a239f6c0-0698-44c4-a124-7dde783e4ee5",
+        "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that enables customers to estimate loan duration based on monthly rate, loan amount, and interest rate using the same calculation logic as the existing loan calculator.\n\n## Business Context\nThis change is needed as a quality-of-life improvement for customers. It supports a better self-service experience by helping customers estimate loan duration more easily, with greater confidence, and with less effort when planning or comparing loan options. By making the calculation more accessible and consistent with the existing loan calculator, customers can reduce the need for manual calculations, avoid uncertainty, and spend less time seeking support assistance.\n\n## Users\nCustomers, management, and internal staff\n\n## Functional Requirements\n- The system must calculate loan duration using one monthly rate, one loan amount, and one interest rate.\n- The calculation must use the logic from the existing loan calculator.\n- The output must be the loan duration expressed in months.\n- The result must be rounded to 2 decimal places.\n\n## Non-Functional Requirements\n- Security\n\n## Risks and Dependencies\n- Dependency on the existing loan calculator calculation logic.\n- Risk of inconsistency if the existing calculator logic changes or is interpreted differently.\n\n## Open Questions\n- None at this time.",
+        "source": "revised"
+      }
+    ],
+    "schemaVersion": 1,
+    "sessionId": "session-33ef99da-bb71-46a4-840f-a14bf8cefbf7",
+    "status": "ready",
+    "templateId": "business-requirements-v1",
+    "updatedAt": "2026-04-10T00:53:14.087Z"
+  }
+}

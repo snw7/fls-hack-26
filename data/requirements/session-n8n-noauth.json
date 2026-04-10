@@ -1,0 +1,46 @@
+{
+  "current_markdown": "# Requirement Brief\n\n## Goal\n\nTest export to n8n without auth.",
+  "current_revision": {
+    "createdAt": "2026-04-10T10:05:00Z",
+    "id": "rev-1",
+    "markdown": "# Requirement Brief\n\n## Goal\n\nTest export to n8n without auth.",
+    "source": "generated"
+  },
+  "exported_at": "2026-04-10T02:11:46.584820+00:00",
+  "latest_change_summary": [
+    "Created export smoke test without auth."
+  ],
+  "schema_version": 1,
+  "session": {
+    "changeSummary": [
+      "Created export smoke test without auth."
+    ],
+    "chatHistory": [],
+    "collectedContext": {
+      "business_context": null,
+      "functional_requirements": null,
+      "goal": "Test export to n8n without auth.",
+      "non_functional_requirements": null,
+      "risks_and_dependencies": null,
+      "users": null
+    },
+    "createdAt": "2026-04-10T10:00:00Z",
+    "language": "en",
+    "lastError": null,
+    "pendingComments": [],
+    "phase": "review",
+    "revisions": [
+      {
+        "createdAt": "2026-04-10T10:05:00Z",
+        "id": "rev-1",
+        "markdown": "# Requirement Brief\n\n## Goal\n\nTest export to n8n without auth.",
+        "source": "generated"
+      }
+    ],
+    "schemaVersion": 1,
+    "sessionId": "session-n8n-noauth",
+    "status": "ready",
+    "templateId": "business-requirements-v1",
+    "updatedAt": "2026-04-10T10:05:00Z"
+  }
+}

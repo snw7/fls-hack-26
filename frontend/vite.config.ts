@@ -12,7 +12,15 @@ export default defineConfig({
         target: 'http://localhost:8000',
         changeOrigin: true,
       },
+      '/sessions': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
       '/webhook-test': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
+      '/audio': {
         target: 'http://localhost:8000',
         changeOrigin: true,
       },

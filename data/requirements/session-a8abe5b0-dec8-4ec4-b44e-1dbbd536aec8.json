@@ -1,0 +1,165 @@
+{
+  "current_markdown": "# Requirement Brief\n\n## Goal\nIntroduce a new loan duration feature that can calculate the appropriate loan term based on the loan amount, interest, and rate. The intended outcome is to improve the speed and consistency of loan-related decisions while supporting better business performance.\n\n## Business Context\nThis change is being driven by operational efficiency and revenue growth objectives. By automating or simplifying loan duration calculation, the organization can reduce manual effort, improve turnaround time, and support more effective lending decisions.\n\nA more consistent loan duration capability may also help the business present loan products more efficiently and align offers more closely with customer and portfolio objectives. This supports both internal productivity and the potential to increase revenue through improved lending activity.\n\n## Users\nThe primary users and actors are management, branch staff, and the operations team. Management will use the capability to support oversight and business decision-making, branch staff will use it in day-to-day customer interaction and loan processing, and the operations team will rely on it to support accurate back-office processing and workflow efficiency.\n\n## Functional Requirements\nThe system must provide the ability to calculate loan duration using the loan amount, interest, and rate as input values. The calculation should be available in a way that supports the work of branch staff, operations, and management, with outputs that can be used for loan processing and review.\n\nThe feature should return a clear and usable loan duration result and should support consistent application of the calculation logic. If the calculation is exposed through a user interface or service, it should be straightforward for users to enter the required inputs and obtain the result without manual calculation.\n\n## Non-Functional Requirements\nThe solution must meet security requirements appropriate for banking software. Access to the feature and any related data should be controlled so that only authorized users can use it, and sensitive loan information should be protected in transit and at rest where applicable.\n\nThe feature should also behave reliably and produce consistent results across users and channels. Any implementation should support auditability and traceability consistent with internal control expectations, especially if the calculation influences customer-facing or operational loan decisions.\n\n## Risks and Dependencies\nNo specific risks or dependencies have been identified so far. A likely dependency is agreement on the exact calculation logic and any business rules that define how loan duration is derived from amount, interest, and rate.\n\nThere may also be implementation dependencies if the calculation needs to integrate with existing lending systems, pricing engines, or user interfaces. These should be confirmed during refinement to avoid mismatches in logic, data availability, or user experience.\n\n## Open Questions\nNo open questions have been identified at this stage, but this area should be treated as an active refinement item before design or implementation begins. The exact behavior of the loan duration feature needs to be clarified so that all stakeholders share a common understanding of how the calculation should work, what inputs are required, and what outputs are expected. Confirming these points early will reduce the risk of rework, inconsistent interpretations, and downstream issues in testing or deployment.\n\nThe following questions should be resolved during requirements refinement:\n\n- What is the exact formula for calculating loan duration from loan amount, interest, and rate?\n- Which field represents the interest input, and how is it defined in business terms?\n- Which field represents the rate input, and is it a nominal rate, effective rate, annual rate, monthly rate, or another measure?\n- Are there any additional inputs required beyond amount, interest, and rate?\n- Should the calculation support fixed-rate loans, variable-rate loans, or both?\n- Are there different calculation rules for different loan products, customer segments, or channels?\n- What rounding rules should be applied to the duration result?\n- Should duration be returned in months, years, days, or another unit?\n- If the duration does not resolve to a whole number, how should partial periods be handled?\n- Should the system return an exact calculated term, a recommended term, or a range of possible terms?\n- Are there minimum and maximum duration limits that must be enforced?\n- How should the feature behave if the input values are missing, invalid, zero, or outside acceptable business thresholds?\n- Should the system display validation messages to users, and if so, what wording should be used?\n- Should the calculation be available only through a user interface, or also through an API or backend service?\n- Do branch staff and operations users need different access paths or screen layouts?\n- Should the result be saved to the loan record, or only displayed temporarily for decision support?\n- Is the calculated duration intended to be advisory, or should it directly drive loan processing decisions?\n- How should exceptions or override scenarios be handled when a standard calculation is not appropriate?\n- What audit information should be captured when the calculation is performed?\n- Do we need to log the input values, the resulting term, the timestamp, and the user who performed the calculation?\n- What response time is expected for the calculation in user-facing scenarios?\n- Are there reporting or analytics needs associated with the calculated duration data?\n- Does the business require versioning of the calculation logic so that historical results can be reproduced later?\n- How should the feature handle changes to interest or rate after the initial calculation has been completed?\n- Are there compliance or policy constraints that affect how the result can be used in customer communications?\n- Should multiple loan products with different term structures be supported in the initial release, or added later?\n\nThese questions should be prioritized and answered before finalizing the solution design. Once the formula, validation rules, supported products, and integration expectations are confirmed, the implementation approach can be defined with greater confidence and the feature can be aligned more closely with business, operational, and control requirements.",
+  "current_revision": {
+    "createdAt": "2026-04-10T02:54:57.389Z",
+    "id": "rev-c8349200-db40-4998-8b45-3c446c6a486c",
+    "markdown": "# Requirement Brief\n\n## Goal\nIntroduce a new loan duration feature that can calculate the appropriate loan term based on the loan amount, interest, and rate. The intended outcome is to improve the speed and consistency of loan-related decisions while supporting better business performance.\n\n## Business Context\nThis change is being driven by operational efficiency and revenue growth objectives. By automating or simplifying loan duration calculation, the organization can reduce manual effort, improve turnaround time, and support more effective lending decisions.\n\nA more consistent loan duration capability may also help the business present loan products more efficiently and align offers more closely with customer and portfolio objectives. This supports both internal productivity and the potential to increase revenue through improved lending activity.\n\n## Users\nThe primary users and actors are management, branch staff, and the operations team. Management will use the capability to support oversight and business decision-making, branch staff will use it in day-to-day customer interaction and loan processing, and the operations team will rely on it to support accurate back-office processing and workflow efficiency.\n\n## Functional Requirements\nThe system must provide the ability to calculate loan duration using the loan amount, interest, and rate as input values. The calculation should be available in a way that supports the work of branch staff, operations, and management, with outputs that can be used for loan processing and review.\n\nThe feature should return a clear and usable loan duration result and should support consistent application of the calculation logic. If the calculation is exposed through a user interface or service, it should be straightforward for users to enter the required inputs and obtain the result without manual calculation.\n\n## Non-Functional Requirements\nThe solution must meet security requirements appropriate for banking software. Access to the feature and any related data should be controlled so that only authorized users can use it, and sensitive loan information should be protected in transit and at rest where applicable.\n\nThe feature should also behave reliably and produce consistent results across users and channels. Any implementation should support auditability and traceability consistent with internal control expectations, especially if the calculation influences customer-facing or operational loan decisions.\n\n## Risks and Dependencies\nNo specific risks or dependencies have been identified so far. A likely dependency is agreement on the exact calculation logic and any business rules that define how loan duration is derived from amount, interest, and rate.\n\nThere may also be implementation dependencies if the calculation needs to integrate with existing lending systems, pricing engines, or user interfaces. These should be confirmed during refinement to avoid mismatches in logic, data availability, or user experience.\n\n## Open Questions\nNo open questions have been identified at this stage, but this area should be treated as an active refinement item before design or implementation begins. The exact behavior of the loan duration feature needs to be clarified so that all stakeholders share a common understanding of how the calculation should work, what inputs are required, and what outputs are expected. Confirming these points early will reduce the risk of rework, inconsistent interpretations, and downstream issues in testing or deployment.\n\nThe following questions should be resolved during requirements refinement:\n\n- What is the exact formula for calculating loan duration from loan amount, interest, and rate?\n- Which field represents the interest input, and how is it defined in business terms?\n- Which field represents the rate input, and is it a nominal rate, effective rate, annual rate, monthly rate, or another measure?\n- Are there any additional inputs required beyond amount, interest, and rate?\n- Should the calculation support fixed-rate loans, variable-rate loans, or both?\n- Are there different calculation rules for different loan products, customer segments, or channels?\n- What rounding rules should be applied to the duration result?\n- Should duration be returned in months, years, days, or another unit?\n- If the duration does not resolve to a whole number, how should partial periods be handled?\n- Should the system return an exact calculated term, a recommended term, or a range of possible terms?\n- Are there minimum and maximum duration limits that must be enforced?\n- How should the feature behave if the input values are missing, invalid, zero, or outside acceptable business thresholds?\n- Should the system display validation messages to users, and if so, what wording should be used?\n- Should the calculation be available only through a user interface, or also through an API or backend service?\n- Do branch staff and operations users need different access paths or screen layouts?\n- Should the result be saved to the loan record, or only displayed temporarily for decision support?\n- Is the calculated duration intended to be advisory, or should it directly drive loan processing decisions?\n- How should exceptions or override scenarios be handled when a standard calculation is not appropriate?\n- What audit information should be captured when the calculation is performed?\n- Do we need to log the input values, the resulting term, the timestamp, and the user who performed the calculation?\n- What response time is expected for the calculation in user-facing scenarios?\n- Are there reporting or analytics needs associated with the calculated duration data?\n- Does the business require versioning of the calculation logic so that historical results can be reproduced later?\n- How should the feature handle changes to interest or rate after the initial calculation has been completed?\n- Are there compliance or policy constraints that affect how the result can be used in customer communications?\n- Should multiple loan products with different term structures be supported in the initial release, or added later?\n\nThese questions should be prioritized and answered before finalizing the solution design. Once the formula, validation rules, supported products, and integration expectations are confirmed, the implementation approach can be defined with greater confidence and the feature can be aligned more closely with business, operational, and control requirements.",
+    "source": "revised"
+  },
+  "exported_at": "2026-04-10T02:55:26.061877+00:00",
+  "latest_change_summary": [
+    "Expanded the Open Questions section substantially",
+    "Added detailed clarification prompts for formula, inputs, validation, rounding, outputs, and audit needs",
+    "Kept the rest of the document unchanged"
+  ],
+  "schema_version": 1,
+  "session": {
+    "changeSummary": [
+      "Expanded the Open Questions section substantially",
+      "Added detailed clarification prompts for formula, inputs, validation, rounding, outputs, and audit needs",
+      "Kept the rest of the document unchanged"
+    ],
+    "chatHistory": [
+      {
+        "content": "Describe the business requirement, the target users, and the outcome you need.\nI will turn that into a structured markdown brief you can refine.",
+        "id": "assistant-060230a9-5559-4461-b3e3-0049a4734c66",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:49:42.320Z"
+      },
+      {
+        "content": "i want a new feature",
+        "id": "user-f09333fd-eccd-4a4e-8694-089e55e921fe",
+        "role": "user",
+        "timestamp": "2026-04-10T02:49:46.868Z"
+      },
+      {
+        "content": "What specific business problem should this new feature solve, and what outcome do you want it to achieve?",
+        "id": "assistant-6e7088ba-a686-4ea8-9ed5-cc0580e1367a",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:49:49.345Z"
+      },
+      {
+        "content": "i want a new feature",
+        "id": "user-b10ddcdb-c658-42cc-ad87-8ae3f01f80f6",
+        "role": "user",
+        "timestamp": "2026-04-10T02:49:55.210Z"
+      },
+      {
+        "content": "What specific business problem should this new feature solve, and what outcome do you want it to achieve?",
+        "id": "assistant-01f9a1cb-b348-4be1-9912-42e4100b2509",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:49:57.325Z"
+      },
+      {
+        "content": "outcome should be loan duration, specific business problem i havent defined yet. can you help me with that?",
+        "id": "user-bf24bebd-c6f4-4b70-bd1b-f7f01da57cd5",
+        "role": "user",
+        "timestamp": "2026-04-10T02:51:30.056Z"
+      },
+      {
+        "content": "What business problem or driver is prompting the need to change or introduce the loan duration feature (for example: customer demand, regulatory change, product competitiveness, operational efficiency, or revenue growth)?",
+        "id": "assistant-70a31071-e737-46e4-8567-5eaa4c1f3ef4",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:51:32.068Z"
+      },
+      {
+        "content": "operational efficiency and revenue growth",
+        "id": "user-3069e859-d984-45c4-9c8d-0324f98e79c1",
+        "role": "user",
+        "timestamp": "2026-04-10T02:51:43.519Z"
+      },
+      {
+        "content": "Who are the target users or actors for this loan duration feature (for example, customers, loan officers, branch staff, operations teams, or underwriting)?",
+        "id": "assistant-307e36ea-2efe-4d79-ae47-6f9ceeeb3e59",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:51:46.431Z"
+      },
+      {
+        "content": "management, branch staff and the operations team",
+        "id": "user-69118726-6951-4338-90c0-bd78fa7c2664",
+        "role": "user",
+        "timestamp": "2026-04-10T02:51:55.866Z"
+      },
+      {
+        "content": "What should the new loan duration feature do specifically, for example what loan term options should be available and what actions should management, branch staff, or the operations team be able to perform with it?",
+        "id": "assistant-9c92a9de-31bc-4fa4-a523-f5e52a591257",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:51:57.851Z"
+      },
+      {
+        "content": "it should be able to calculate loan duration based on amount, intereset and rate",
+        "id": "user-de7bcf77-1d3f-401f-bc1d-ddc7b884f97b",
+        "role": "user",
+        "timestamp": "2026-04-10T02:54:10.963Z"
+      },
+      {
+        "content": "What non-functional requirements should apply to the loan duration calculation feature, such as performance, accuracy, security, auditability, or regulatory/compliance expectations?",
+        "id": "assistant-2ea03680-a2e3-4fdd-afbe-bf8a6dec303f",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:54:12.922Z"
+      },
+      {
+        "content": "security",
+        "id": "user-0b87ca8f-5ffa-45b0-ba1f-eb639a731c64",
+        "role": "user",
+        "timestamp": "2026-04-10T02:54:15.884Z"
+      },
+      {
+        "content": "What known risks, blockers, or external dependencies should be noted for this loan duration feature, such as data quality, system integration, policy approval, or delivery timeline dependencies?",
+        "id": "assistant-ec13c457-a359-481c-bb66-ff1cb916c02b",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:54:17.943Z"
+      },
+      {
+        "content": "none so far",
+        "id": "user-7f8efd29-9cda-4256-a839-d70915398736",
+        "role": "user",
+        "timestamp": "2026-04-10T02:54:23.770Z"
+      },
+      {
+        "content": "I have enough information to draft the requirement brief. I will prepare a structured first version based on the details provided.",
+        "id": "assistant-f3dfa0a8-21bc-4012-b5cc-f9d3c7cd3388",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:54:29.406Z"
+      },
+      {
+        "content": "Done. I expanded the Open Questions section significantly to provide more detail and add a broader set of clarification points for refinement.",
+        "id": "assistant-7127dddf-51ae-404c-8662-04475495dc7b",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:54:57.389Z"
+      }
+    ],
+    "collectedContext": {
+      "business_context": "The change is driven by operational efficiency and revenue growth objectives.",
+      "functional_requirements": "The system must calculate loan duration based on amount, interest, and rate, and provide a clear result usable by branch staff, operations, and management.",
+      "goal": "Introduce a new loan duration feature that calculates the loan term based on the loan amount, interest, and rate, with the aim of improving speed, consistency, and business performance.",
+      "non_functional_requirements": "Security.",
+      "risks_and_dependencies": "No known risks or blockers so far; dependencies may include agreement on calculation logic and possible integration with existing lending systems.",
+      "users": "Management, branch staff, and the operations team."
+    },
+    "createdAt": "2026-04-10T02:49:42.320Z",
+    "language": "en",
+    "lastError": null,
+    "pendingComments": [],
+    "phase": "review",
+    "revisions": [
+      {
+        "createdAt": "2026-04-10T02:54:29.407Z",
+        "id": "rev-a098556b-f159-42b1-8d73-687dfcde07c7",
+        "markdown": "# Requirement Brief\n\n## Goal\nIntroduce a new loan duration feature that can calculate the appropriate loan term based on the loan amount, interest, and rate. The intended outcome is to improve the speed and consistency of loan-related decisions while supporting better business performance.\n\n## Business Context\nThis change is being driven by operational efficiency and revenue growth objectives. By automating or simplifying loan duration calculation, the organization can reduce manual effort, improve turnaround time, and support more effective lending decisions.\n\nA more consistent loan duration capability may also help the business present loan products more efficiently and align offers more closely with customer and portfolio objectives. This supports both internal productivity and the potential to increase revenue through improved lending activity.\n\n## Users\nThe primary users and actors are management, branch staff, and the operations team. Management will use the capability to support oversight and business decision-making, branch staff will use it in day-to-day customer interaction and loan processing, and the operations team will rely on it to support accurate back-office processing and workflow efficiency.\n\n## Functional Requirements\nThe system must provide the ability to calculate loan duration using the loan amount, interest, and rate as input values. The calculation should be available in a way that supports the work of branch staff, operations, and management, with outputs that can be used for loan processing and review.\n\nThe feature should return a clear and usable loan duration result and should support consistent application of the calculation logic. If the calculation is exposed through a user interface or service, it should be straightforward for users to enter the required inputs and obtain the result without manual calculation.\n\n## Non-Functional Requirements\nThe solution must meet security requirements appropriate for banking software. Access to the feature and any related data should be controlled so that only authorized users can use it, and sensitive loan information should be protected in transit and at rest where applicable.\n\nThe feature should also behave reliably and produce consistent results across users and channels. Any implementation should support auditability and traceability consistent with internal control expectations, especially if the calculation influences customer-facing or operational loan decisions.\n\n## Risks and Dependencies\nNo specific risks or dependencies have been identified so far. A likely dependency is agreement on the exact calculation logic and any business rules that define how loan duration is derived from amount, interest, and rate.\n\nThere may also be implementation dependencies if the calculation needs to integrate with existing lending systems, pricing engines, or user interfaces. These should be confirmed during refinement to avoid mismatches in logic, data availability, or user experience.\n\n## Open Questions\nNo open questions have been identified at this stage. It would still be useful to confirm the exact formula, any rounding rules, and whether the feature should support multiple loan products or term options.",
+        "source": "generated"
+      },
+      {
+        "createdAt": "2026-04-10T02:54:57.389Z",
+        "id": "rev-c8349200-db40-4998-8b45-3c446c6a486c",
+        "markdown": "# Requirement Brief\n\n## Goal\nIntroduce a new loan duration feature that can calculate the appropriate loan term based on the loan amount, interest, and rate. The intended outcome is to improve the speed and consistency of loan-related decisions while supporting better business performance.\n\n## Business Context\nThis change is being driven by operational efficiency and revenue growth objectives. By automating or simplifying loan duration calculation, the organization can reduce manual effort, improve turnaround time, and support more effective lending decisions.\n\nA more consistent loan duration capability may also help the business present loan products more efficiently and align offers more closely with customer and portfolio objectives. This supports both internal productivity and the potential to increase revenue through improved lending activity.\n\n## Users\nThe primary users and actors are management, branch staff, and the operations team. Management will use the capability to support oversight and business decision-making, branch staff will use it in day-to-day customer interaction and loan processing, and the operations team will rely on it to support accurate back-office processing and workflow efficiency.\n\n## Functional Requirements\nThe system must provide the ability to calculate loan duration using the loan amount, interest, and rate as input values. The calculation should be available in a way that supports the work of branch staff, operations, and management, with outputs that can be used for loan processing and review.\n\nThe feature should return a clear and usable loan duration result and should support consistent application of the calculation logic. If the calculation is exposed through a user interface or service, it should be straightforward for users to enter the required inputs and obtain the result without manual calculation.\n\n## Non-Functional Requirements\nThe solution must meet security requirements appropriate for banking software. Access to the feature and any related data should be controlled so that only authorized users can use it, and sensitive loan information should be protected in transit and at rest where applicable.\n\nThe feature should also behave reliably and produce consistent results across users and channels. Any implementation should support auditability and traceability consistent with internal control expectations, especially if the calculation influences customer-facing or operational loan decisions.\n\n## Risks and Dependencies\nNo specific risks or dependencies have been identified so far. A likely dependency is agreement on the exact calculation logic and any business rules that define how loan duration is derived from amount, interest, and rate.\n\nThere may also be implementation dependencies if the calculation needs to integrate with existing lending systems, pricing engines, or user interfaces. These should be confirmed during refinement to avoid mismatches in logic, data availability, or user experience.\n\n## Open Questions\nNo open questions have been identified at this stage, but this area should be treated as an active refinement item before design or implementation begins. The exact behavior of the loan duration feature needs to be clarified so that all stakeholders share a common understanding of how the calculation should work, what inputs are required, and what outputs are expected. Confirming these points early will reduce the risk of rework, inconsistent interpretations, and downstream issues in testing or deployment.\n\nThe following questions should be resolved during requirements refinement:\n\n- What is the exact formula for calculating loan duration from loan amount, interest, and rate?\n- Which field represents the interest input, and how is it defined in business terms?\n- Which field represents the rate input, and is it a nominal rate, effective rate, annual rate, monthly rate, or another measure?\n- Are there any additional inputs required beyond amount, interest, and rate?\n- Should the calculation support fixed-rate loans, variable-rate loans, or both?\n- Are there different calculation rules for different loan products, customer segments, or channels?\n- What rounding rules should be applied to the duration result?\n- Should duration be returned in months, years, days, or another unit?\n- If the duration does not resolve to a whole number, how should partial periods be handled?\n- Should the system return an exact calculated term, a recommended term, or a range of possible terms?\n- Are there minimum and maximum duration limits that must be enforced?\n- How should the feature behave if the input values are missing, invalid, zero, or outside acceptable business thresholds?\n- Should the system display validation messages to users, and if so, what wording should be used?\n- Should the calculation be available only through a user interface, or also through an API or backend service?\n- Do branch staff and operations users need different access paths or screen layouts?\n- Should the result be saved to the loan record, or only displayed temporarily for decision support?\n- Is the calculated duration intended to be advisory, or should it directly drive loan processing decisions?\n- How should exceptions or override scenarios be handled when a standard calculation is not appropriate?\n- What audit information should be captured when the calculation is performed?\n- Do we need to log the input values, the resulting term, the timestamp, and the user who performed the calculation?\n- What response time is expected for the calculation in user-facing scenarios?\n- Are there reporting or analytics needs associated with the calculated duration data?\n- Does the business require versioning of the calculation logic so that historical results can be reproduced later?\n- How should the feature handle changes to interest or rate after the initial calculation has been completed?\n- Are there compliance or policy constraints that affect how the result can be used in customer communications?\n- Should multiple loan products with different term structures be supported in the initial release, or added later?\n\nThese questions should be prioritized and answered before finalizing the solution design. Once the formula, validation rules, supported products, and integration expectations are confirmed, the implementation approach can be defined with greater confidence and the feature can be aligned more closely with business, operational, and control requirements.",
+        "source": "revised"
+      }
+    ],
+    "schemaVersion": 1,
+    "sessionId": "session-a8abe5b0-dec8-4ec4-b44e-1dbbd536aec8",
+    "status": "ready",
+    "templateId": "business-requirements-v1",
+    "updatedAt": "2026-04-10T02:54:57.393Z"
+  }
+}

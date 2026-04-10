@@ -1,4 +1,6 @@
-export type Phase = 'clarification' | 'review';
+import type { RequirementsContext } from './data/template';
+
+export type Phase = 'clarification' | 'review' | 'submitted';
 export type SessionStatus = 'idle' | 'loading' | 'ready' | 'error';
 export type MessageRole = 'user' | 'assistant';
 export type RevisionSource = 'generated' | 'revised';
@@ -23,6 +25,8 @@ export interface PendingComment {
   commentText: string;
   contextBefore: string;
   contextAfter: string;
+  startOffset?: number;
+  endOffset?: number;
   createdAt: string;
 }
 
@@ -38,7 +42,7 @@ export interface SessionState {
   chatHistory: ChatMessage[];
   revisions: DocumentRevision[];
   pendingComments: PendingComment[];
-  collectedContext: Record<string, string>;
+  collectedContext: RequirementsContext;
   changeSummary: string[];
   lastError: string | null;
 }

@@ -1,6 +1,8 @@
 import json
+import re
 from typing import Any, Protocol
 
+import httpx
 from openai import OpenAI
 
 from .prompts import build_discovery_messages, build_revision_messages
@@ -10,6 +12,7 @@ from .schemas import (
     RevisionErrorResponse,
     RevisionRequest,
     RevisionUpdatedResponse,
+    TranscriptionResponse,
 )
 from .settings import Settings
 
@@ -24,6 +27,145 @@ class AgentService(Protocol):
     def run_revision(
         self, request: RevisionRequest
     ) -> RevisionUpdatedResponse | RevisionErrorResponse: ...
+
+    def transcribe_audio(
+        self,
+        filename: str,
+        content_type: str | None,
+        data: bytes,
+    ) -> TranscriptionResponse: ...
+
+
+def _normalize_for_match(value: str) -> str:
+    return re.sub(r"\s+", " ", value).strip()
+
+
+def _build_normalized_index(markdown: str) -> tuple[str, list[int]]:
+    normalized_chars: list[str] = []
+    raw_index_by_normalized_index: list[int] = []
+    pending_space_index: int | None = None
+    at_line_start = True
+
+    for index, character in enumerate(markdown):
+        if at_line_start:
+            if character in (" ", "\t"):
+                continue
+            if character == ">" and index + 1 < len(markdown) and markdown[index + 1] == " ":
+                continue
+            if character == "#":
+                marker_end = index
+                while marker_end < len(markdown) and markdown[marker_end] == "#":
+                    marker_end += 1
+                if marker_end < len(markdown) and markdown[marker_end] == " ":
+                    continue
+            if character in ("-", "*", "+") and index + 1 < len(markdown) and markdown[index + 1] == " ":
+                continue
+            if character.isdigit():
+                marker_end = index
+                while marker_end < len(markdown) and markdown[marker_end].isdigit():
+                    marker_end += 1
+                if (
+                    marker_end + 1 < len(markdown)
+                    and markdown[marker_end] == "."
+                    and markdown[marker_end + 1] == " "
+                ):
+                    continue
+            at_line_start = False
+
+        if character.isspace():
+            if normalized_chars and pending_space_index is None:
+                pending_space_index = index
+            if character == "\n":
+                at_line_start = True
+            continue
+
+        if pending_space_index is not None:
+            normalized_chars.append(" ")
+            raw_index_by_normalized_index.append(pending_space_index)
+            pending_space_index = None
+
+        normalized_chars.append(character)
+        raw_index_by_normalized_index.append(index)
+
+    return "".join(normalized_chars), raw_index_by_normalized_index
+
+
+def _resolve_comment_selection(
+    markdown: str,
+    selected_text: str,
+    context_before: str = "",
+    context_after: str = "",
+    window_size: int = 56,
+) -> tuple[str, str, str] | None:
+    if not selected_text.strip():
+        return "", context_before, context_after
+
+    exact_index = markdown.find(selected_text)
+    if exact_index != -1:
+        start = max(0, exact_index - window_size)
+        end = min(len(markdown), exact_index + len(selected_text) + window_size)
+        return (
+            selected_text,
+            markdown[start:exact_index],
+            markdown[exact_index + len(selected_text):end],
+        )
+
+    normalized_selected_text = _normalize_for_match(selected_text)
+    if not normalized_selected_text:
+        return None
+
+    normalized_markdown, raw_index_by_normalized_index = _build_normalized_index(markdown)
+    candidate_indices: list[int] = []
+    search_from = 0
+
+    while search_from < len(normalized_markdown):
+        match_index = normalized_markdown.find(normalized_selected_text, search_from)
+        if match_index == -1:
+            break
+        candidate_indices.append(match_index)
+        search_from = match_index + 1
+
+    if not candidate_indices:
+        return None
+
+    normalized_context_before = _normalize_for_match(context_before)
+    normalized_context_after = _normalize_for_match(context_after)
+    matching_candidates: list[int] = []
+
+    for normalized_start in candidate_indices:
+        normalized_end = normalized_start + len(normalized_selected_text) - 1
+        raw_start = raw_index_by_normalized_index[normalized_start]
+        raw_end = raw_index_by_normalized_index[normalized_end] + 1
+        before_slice = markdown[max(0, raw_start - max(window_size, len(context_before) + 8)):raw_start]
+        after_slice = markdown[raw_end:min(len(markdown), raw_end + max(window_size, len(context_after) + 8))]
+
+        before_ok = not normalized_context_before or _normalize_for_match(before_slice).endswith(
+            normalized_context_before
+        )
+        after_ok = not normalized_context_after or _normalize_for_match(after_slice).startswith(
+            normalized_context_after
+        )
+
+        if before_ok and after_ok:
+            matching_candidates.append(normalized_start)
+
+    if len(matching_candidates) == 1:
+        candidate_indices = matching_candidates
+    elif len(candidate_indices) != 1:
+        return None
+
+    normalized_start = candidate_indices[0]
+    normalized_end = normalized_start + len(normalized_selected_text) - 1
+    raw_start = raw_index_by_normalized_index[normalized_start]
+    raw_end = raw_index_by_normalized_index[normalized_end] + 1
+    start = max(0, raw_start - window_size)
+    end = min(len(markdown), raw_end + window_size)
+
+    return (
+        markdown[raw_start:raw_end],
+        markdown[start:raw_start],
+        markdown[raw_end:end],
+    )
 
 
 def _strip_code_fences(value: str) -> str:
@@ -60,6 +202,22 @@ def _sanitize_markdown(markdown: str | None) -> str | None:
     return _strip_code_fences(markdown)
 
 
+def _normalize_discovery_payload(
+    payload: dict[str, Any], request: DiscoveryRequest
+) -> dict[str, Any]:
+    normalized = dict(payload)
+    collected_context = normalized.get("collected_context")
+    if not isinstance(collected_context, dict):
+        collected_context = {}
+
+    if request.template.fields:
+        for field in request.template.fields:
+            collected_context.setdefault(field.key, None)
+
+    normalized["collected_context"] = collected_context
+    return normalized
+
+
 class OpenAIAgentService:
     def __init__(self, settings: Settings):
         self._settings = settings
@@ -68,6 +226,8 @@ class OpenAIAgentService:
             client_kwargs["api_key"] = settings.openai_api_key
         if settings.openai_base_url:
             client_kwargs["base_url"] = settings.openai_base_url
+        else:
+            client_kwargs["base_url"] = "https://api.openai.com/v1"
         self._client = OpenAI(**client_kwargs) if settings.openai_api_key else None
 
     def _require_client(self) -> OpenAI:
@@ -100,35 +260,63 @@ class OpenAIAgentService:
         return _extract_json_payload(output_text)
 
     def run_discovery(self, request: DiscoveryRequest) -> DiscoveryResponse:
-        payload = self._invoke_json(
-            build_discovery_messages(request),
-            max_output_tokens=self._settings.openai_max_output_tokens_discovery,
+        payload = _normalize_discovery_payload(
+            self._invoke_json(
+                build_discovery_messages(request),
+                max_output_tokens=self._settings.openai_max_output_tokens_discovery,
+            ),
+            request,
         )
         response = DiscoveryResponse.model_validate(payload)
         response.markdown = _sanitize_markdown(response.markdown)
+
+        if request.template.fields and response.document_ready:
+            required_keys = {field.key for field in request.template.fields}
+            all_filled = all(
+                response.collected_context.get(key) not in (None, "")
+                for key in required_keys
+            )
+            if not all_filled:
+                response.document_ready = False
+                response.status = "needs_user_input"
+                response.markdown = None
+
         return response
 
     def run_revision(
         self, request: RevisionRequest
     ) -> RevisionUpdatedResponse | RevisionErrorResponse:
-        missing_comment = next(
-            (
-                comment
-                for comment in request.comments
-                if comment.selected_text.strip()
-                and comment.selected_text not in request.current_markdown
-            ),
-            None,
-        )
+        normalized_comments = []
 
-        if missing_comment is not None:
-            return RevisionErrorResponse(
-                status="error",
-                assistant_message=(
-                    "I could not apply the requested changes because one selected text snippet was not found in the document."
-                ),
-                error_code="SELECTED_TEXT_NOT_FOUND",
+        for comment in request.comments:
+            resolved_selection = _resolve_comment_selection(
+                request.current_markdown,
+                comment.selected_text,
+                comment.context_before,
+                comment.context_after,
             )
+
+            if resolved_selection is None:
+                return RevisionErrorResponse(
+                    status="error",
+                    assistant_message=(
+                        "I could not apply the requested changes because one selected text snippet was not found in the document."
+                    ),
+                    error_code="SELECTED_TEXT_NOT_FOUND",
+                )
+
+            selected_text, context_before, context_after = resolved_selection
+            normalized_comments.append(
+                comment.model_copy(
+                    update={
+                        "selected_text": selected_text,
+                        "context_before": context_before,
+                        "context_after": context_after,
+                    }
+                )
+            )
+
+        request = request.model_copy(update={"comments": normalized_comments})
 
         payload = self._invoke_json(
             build_revision_messages(request),
@@ -137,3 +325,58 @@ class OpenAIAgentService:
         response = RevisionUpdatedResponse.model_validate(payload)
         response.updated_markdown = _sanitize_markdown(response.updated_markdown) or ""
         return response
+
+    def transcribe_audio(
+        self,
+        filename: str,
+        content_type: str | None,
+        data: bytes,
+    ) -> TranscriptionResponse:
+        self._require_client()
+        base_url = (
+            self._settings.openai_base_url or "https://api.openai.com/v1"
+        ).rstrip("/")
+        url = f"{base_url}/audio/transcriptions"
+
+        try:
+            response = httpx.post(
+                url,
+                headers={
+                    "Authorization": f"Bearer {self._settings.openai_api_key}",
+                },
+                data={"model": self._settings.openai_transcription_model},
+                files={
+                    "file": (filename, data, content_type or "audio/webm"),
+                },
+                timeout=90.0,
+            )
+        except httpx.HTTPError as exc:
+            raise AgentServiceError(
+                "The transcription request failed before OpenAI returned a response."
+            ) from exc
+
+        payload: Any
+        try:
+            payload = response.json()
+        except ValueError as exc:
+            raise AgentServiceError(
+                "The transcription service returned a non-JSON response."
+            ) from exc
+
+        if response.is_error:
+            error_message = "The transcription request failed."
+            if (
+                isinstance(payload, dict)
+                and isinstance(payload.get("error"), dict)
+                and isinstance(payload["error"].get("message"), str)
+            ):
+                error_message = payload["error"]["message"]
+            raise AgentServiceError(error_message)
+
+        if not isinstance(payload, dict) or not isinstance(payload.get("text"), str):
+            raise AgentServiceError("The transcription response did not include text.")
+
+        usage = payload.get("usage")
+        usage_payload = usage if isinstance(usage, dict) else None
+
+        return TranscriptionResponse(text=payload["text"], usage=usage_payload)
