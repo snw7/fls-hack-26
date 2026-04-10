@@ -23,6 +23,8 @@ export interface PendingComment {
   commentText: string;
   contextBefore: string;
   contextAfter: string;
+  startOffset?: number;
+  endOffset?: number;
   createdAt: string;
 }
 

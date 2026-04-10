@@ -264,6 +264,7 @@ export default function App() {
       ) : (
         <DocumentReviewPane
           markdown={currentRevision.markdown}
+          previousMarkdown={previousRevision?.markdown ?? null}
           revisionCount={state.revisions.length}
           pendingComments={state.pendingComments}
           changeSummary={state.changeSummary}
