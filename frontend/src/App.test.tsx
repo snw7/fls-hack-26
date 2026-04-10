@@ -195,6 +195,12 @@ describe('App integration', () => {
     expect(
       screen.getByRole('button', { name: 'Start another brief' })
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Send PDF Report to PAT' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Export PDF' })
+    ).toBeInTheDocument();
   });
 
   it('shows field progress chips in clarification mode', () => {

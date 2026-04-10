@@ -597,8 +597,35 @@ textarea:focus {
   font-weight: 600;
 }
 
-.ticket-submitted__action {
+.ticket-submitted__export-meta {
+  margin-top: 12px;
+  color: var(--accent-deep);
+  font-size: 0.94rem;
+  font-weight: 600;
+}
+
+.ticket-submitted__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
   margin-top: 28px;
+}
+
+.ticket-submitted__report-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.ticket-submitted__action {
+  margin-top: 0;
+}
+
+.ticket-submitted__report-source {
+  display: none;
 }
 
 .primary-button,
@@ -1194,6 +1221,17 @@ textarea:focus {
   .composer__submit {
     width: 46px;
     height: 46px;
+  }
+
+  .ticket-submitted__footer,
+  .ticket-submitted__report-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ticket-submitted__report-actions {
+    width: 100%;
+    margin-left: 0;
   }
 
   .selection-popover {

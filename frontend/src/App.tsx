@@ -347,6 +347,8 @@ export default function App() {
           confirmationMessage={
             saveState.status === 'saved' ? saveState.message : null
           }
+          markdown={currentRevision?.markdown ?? ''}
+          sessionId={state.sessionId}
           onStartAnother={handleStartAnotherBrief}
         />
       ) : state.phase === 'clarification' || !currentRevision ? (
