@@ -1,0 +1,53 @@
+{
+  "current_markdown": "# Requirement Brief\n\n## Goal\nReduce manual requirement intake.\n",
+  "current_revision": {
+    "createdAt": "2026-04-10T10:10:00Z",
+    "id": "rev-1",
+    "markdown": "# Requirement Brief\n\n## Goal\nReduce manual requirement intake.\n",
+    "source": "generated"
+  },
+  "exported_at": "2026-04-09T23:31:58.710158+00:00",
+  "latest_change_summary": [
+    "Created the first draft."
+  ],
+  "schema_version": 1,
+  "session": {
+    "changeSummary": [
+      "Created the first draft."
+    ],
+    "chatHistory": [
+      {
+        "content": "Describe the business need.",
+        "id": "assistant-1",
+        "role": "assistant",
+        "timestamp": "2026-04-10T10:00:00Z"
+      }
+    ],
+    "collectedContext": {
+      "business_context": "Analysts need a governed workflow.",
+      "functional_requirements": null,
+      "goal": "Reduce manual requirement intake.",
+      "non_functional_requirements": null,
+      "risks_and_dependencies": null,
+      "users": "Business analysts"
+    },
+    "createdAt": "2026-04-10T10:00:00Z",
+    "language": "en",
+    "lastError": null,
+    "pendingComments": [],
+    "phase": "review",
+    "revisions": [
+      {
+        "createdAt": "2026-04-10T10:10:00Z",
+        "id": "rev-1",
+        "markdown": "# Requirement Brief\n\n## Goal\nReduce manual requirement intake.\n",
+        "source": "generated"
+      }
+    ],
+    "schemaVersion": 1,
+    "sessionId": "smoke-export-session",
+    "status": "ready",
+    "templateId": "business-requirements-v1",
+    "updatedAt": "2026-04-10T10:10:00Z"
+  }
+}

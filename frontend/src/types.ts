@@ -1,3 +1,5 @@
+import type { RequirementsContext } from './data/template';
+
 export type Phase = 'clarification' | 'review';
 export type SessionStatus = 'idle' | 'loading' | 'ready' | 'error';
 export type MessageRole = 'user' | 'assistant';
@@ -38,7 +40,7 @@ export interface SessionState {
   chatHistory: ChatMessage[];
   revisions: DocumentRevision[];
   pendingComments: PendingComment[];
-  collectedContext: Record<string, string>;
+  collectedContext: RequirementsContext;
   changeSummary: string[];
   lastError: string | null;
 }

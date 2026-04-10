@@ -34,6 +34,7 @@ The backend serves two active endpoints:
 
 - `POST /webhook/discovery-agent`
 - `POST /webhook/revision-agent`
+- `POST /sessions/{session_id}/export-json`
 
 Their expected payloads and outputs are documented in:
 
@@ -53,3 +54,22 @@ cd ../frontend
 npm install
 npm run dev
 ```
+
+## Contract changes and build visibility
+
+If you change the webhook request/response contract, rebuild both services so the running frontend bundle and backend schema stay aligned:
+
+```bash
+docker compose up --build
+```
+
+To identify the running backend build from outside the container, set `BACKEND_BUILD_ID` before starting Compose. The backend exposes it in `GET /health` and the `X-Build-Id` response header.
+
+## Saving requirement JSON
+
+The review screen includes a manual `Save JSON` action. It persists the full current session snapshot for later Jira generation to:
+
+- host path: `./data/requirements/<session_id>.json`
+- container path: `/app/data/requirements/<session_id>.json`
+
+The saved file includes the session state, latest revision, latest markdown, and change summary in one stable JSON document.

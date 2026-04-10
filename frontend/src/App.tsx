@@ -5,6 +5,7 @@ import { DocumentReviewPane } from './components/DocumentReviewPane';
 import { SessionSidebar } from './components/SessionSidebar';
 import { StatusBanner } from './components/StatusBanner';
 import { requirementsTemplate } from './data/template';
+import type { RequirementsContext } from './data/template';
 import { usePersistentSession } from './hooks/usePersistentSession';
 import { runtimeConfig } from './lib/config';
 import { createLineDiff, summarizeDiff } from './lib/diff';
@@ -13,10 +14,27 @@ import {
   createPendingComment,
   createRevision,
 } from './lib/session';
-import { callDiscoveryAgent, callRevisionAgent } from './lib/webhooks';
+import {
+  callDiscoveryAgent,
+  callExportSession,
+  callRevisionAgent,
+} from './lib/webhooks';
 
 function toTimestamp(): string {
   return new Date().toISOString();
+}
+
+function mergeContext(
+  current: RequirementsContext,
+  incoming: Record<string, string | null>
+): RequirementsContext {
+  const merged = { ...current };
+  for (const [key, value] of Object.entries(incoming)) {
+    if (key in merged && value !== null && value.trim() !== '') {
+      (merged as Record<string, string | null>)[key] = value;
+    }
+  }
+  return merged;
 }
 
 export default function App() {
@@ -24,6 +42,10 @@ export default function App() {
     runtimeConfig.defaultTemplateId
   );
   const [composerValue, setComposerValue] = useState('');
+  const [saveState, setSaveState] = useState<{
+    status: 'idle' | 'saving' | 'saved' | 'error';
+    message: string | null;
+  }>({ status: 'idle', message: null });
 
   const currentRevision = state.revisions.at(-1) ?? null;
   const previousRevision = state.revisions.at(-2) ?? null;
@@ -32,6 +54,11 @@ export default function App() {
       ? createLineDiff(previousRevision.markdown, currentRevision.markdown)
       : [];
   const diffStats = summarizeDiff(diffBlocks);
+
+  function handleReset() {
+    setSaveState({ status: 'idle', message: null });
+    reset();
+  }
 
   async function handleSendMessage() {
     const trimmedValue = composerValue.trim();
@@ -84,15 +111,16 @@ export default function App() {
             phase,
             chatHistory: [...nextHistory, assistantMessage],
             revisions,
-            collectedContext: {
-              ...current.collectedContext,
-              ...response.collected_context,
-            },
+            collectedContext: mergeContext(
+              current.collectedContext,
+              response.collected_context,
+            ),
             lastError: null,
             updatedAt: toTimestamp(),
           };
         });
       });
+      setSaveState({ status: 'idle', message: null });
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'The discovery webhook failed.';
@@ -159,6 +187,7 @@ export default function App() {
           updatedAt: toTimestamp(),
         }));
       });
+      setSaveState({ status: 'idle', message: null });
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'The draft generation failed.';
@@ -175,6 +204,7 @@ export default function App() {
   function handleAddComment(
     comment: Parameters<typeof createPendingComment>[0]
   ) {
+    setSaveState({ status: 'idle', message: null });
     setState((current) => ({
       ...current,
       pendingComments: [...current.pendingComments, createPendingComment(comment)],
@@ -183,6 +213,7 @@ export default function App() {
   }
 
   function handleRemoveComment(id: string) {
+    setSaveState({ status: 'idle', message: null });
     setState((current) => ({
       ...current,
       pendingComments: current.pendingComments.filter((comment) => comment.id !== id),
@@ -241,6 +272,7 @@ export default function App() {
           updatedAt: toTimestamp(),
         }));
       });
+      setSaveState({ status: 'idle', message: null });
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'The revision webhook failed.';
@@ -251,6 +283,35 @@ export default function App() {
         lastError: message,
         updatedAt: toTimestamp(),
       }));
+    }
+  }
+
+  async function handleSaveJson() {
+    if (state.revisions.length === 0) {
+      return;
+    }
+
+    setSaveState({ status: 'saving', message: null });
+
+    try {
+      const response = await callExportSession(
+        runtimeConfig.sessionExportUrlBase,
+        state.sessionId,
+        { session: state }
+      );
+
+      setSaveState({
+        status: 'saved',
+        message: `Saved JSON to ${response.file_path}`,
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'The JSON save failed.';
+
+      setSaveState({
+        status: 'error',
+        message,
+      });
     }
   }
 
@@ -273,7 +334,7 @@ export default function App() {
       appName={runtimeConfig.appName}
       phase={state.phase}
       status={state.status}
-      onReset={reset}
+      onReset={handleReset}
       sidebar={<SessionSidebar state={state} />}
       banner={banner}
     >
@@ -282,6 +343,7 @@ export default function App() {
           messages={state.chatHistory}
           value={composerValue}
           busy={state.status === 'loading'}
+          collectedContext={state.collectedContext}
           onChange={setComposerValue}
           onSubmit={handleSendMessage}
           onGenerateDraft={handleGenerateDraft}
@@ -295,9 +357,13 @@ export default function App() {
           diffBlocks={diffBlocks}
           diffStats={diffStats}
           busy={state.status === 'loading'}
+          saveBusy={saveState.status === 'saving'}
+          saveStatus={saveState.status}
+          saveMessage={saveState.message}
           onAddComment={handleAddComment}
           onRemoveComment={handleRemoveComment}
           onSubmitRevision={handleSubmitRevision}
+          onSaveJson={handleSaveJson}
         />
       )}
     </AppShell>

@@ -1,0 +1,130 @@
+{
+  "current_markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration based on monthly rate, loan amount, and interest rate to support faster quoting.\n\n## Business Context\nThe business needs faster quoting so end customers and internal staff can quickly obtain loan duration estimates without manual calculation.\n\n## Users\n- End customers\n- Internal staff\n\n## Functional Requirements\n- The system must calculate loan duration using monthly rate, loan amount, and interest rate.\n- The system must accept the required input values for the calculation.\n- The system must return the calculated loan duration in a normal time format.\n- No additional calculation rules are required beyond the stated inputs.\n\n## Non-Functional Requirements\n- Security\n- Performance\n\n## Risks and Dependencies\n- No known risks or external dependencies currently identified.\n\n## Open Questions\n- None currently identified.",
+  "current_revision": {
+    "createdAt": "2026-04-09T23:46:39.281Z",
+    "id": "rev-05da022f-a39e-490a-af47-9f570141b47c",
+    "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration based on monthly rate, loan amount, and interest rate to support faster quoting.\n\n## Business Context\nThe business needs faster quoting so end customers and internal staff can quickly obtain loan duration estimates without manual calculation.\n\n## Users\n- End customers\n- Internal staff\n\n## Functional Requirements\n- The system must calculate loan duration using monthly rate, loan amount, and interest rate.\n- The system must accept the required input values for the calculation.\n- The system must return the calculated loan duration in a normal time format.\n- No additional calculation rules are required beyond the stated inputs.\n\n## Non-Functional Requirements\n- Security\n- Performance\n\n## Risks and Dependencies\n- No known risks or external dependencies currently identified.\n\n## Open Questions\n- None currently identified.",
+    "source": "generated"
+  },
+  "exported_at": "2026-04-09T23:46:58.541786+00:00",
+  "latest_change_summary": [],
+  "schema_version": 1,
+  "session": {
+    "changeSummary": [],
+    "chatHistory": [
+      {
+        "content": "Describe the business requirement, the target users, and the outcome you need. I will turn that into a structured markdown brief you can refine.",
+        "id": "assistant-843f4716-1aea-43e7-82e6-eb2c6c616677",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:45:04.527Z"
+      },
+      {
+        "content": "I want a new feature that calculates the loan duration based on monthly rate, loan amount and interest rate.",
+        "id": "user-30142168-af71-4ea2-af5f-efebca16713a",
+        "role": "user",
+        "timestamp": "2026-04-09T23:45:24.678Z"
+      },
+      {
+        "content": "What business need or driver is prompting this loan duration calculation feature (for example, faster quoting, customer self-service, regulatory reporting, or reducing manual calculations)?",
+        "id": "assistant-4dae3718-0afb-4cf4-947a-3dd6d56657a3",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:45:26.945Z"
+      },
+      {
+        "content": "faster quoting",
+        "id": "user-66221852-cfdd-478a-a991-24ea5070bb1e",
+        "role": "user",
+        "timestamp": "2026-04-09T23:45:37.690Z"
+      },
+      {
+        "content": "Who are the target users or actors for this feature (for example, relationship managers, loan officers, customer-facing agents, or end customers)?",
+        "id": "assistant-cc6597f2-87aa-4b87-8608-7935d7045e61",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:45:39.607Z"
+      },
+      {
+        "content": "end customers and internal staff",
+        "id": "user-75222b3b-d50a-42bc-a42d-a27d8b913194",
+        "role": "user",
+        "timestamp": "2026-04-09T23:45:50.090Z"
+      },
+      {
+        "content": "What should the system do exactly to calculate the loan duration, including any required inputs, calculation rules, and the expected output format?",
+        "id": "assistant-c3053c77-3b6d-4602-8ea9-576d13945663",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:45:53.630Z"
+      },
+      {
+        "content": "no extra rules. output format should just be normal time format",
+        "id": "user-93463218-bd20-4235-81fb-1688d713b8f3",
+        "role": "user",
+        "timestamp": "2026-04-09T23:46:15.315Z"
+      },
+      {
+        "content": "What non-functional requirements should apply to this feature, such as security, performance, availability, auditability, or compliance expectations?",
+        "id": "assistant-0da57f58-52e0-4f6d-aa7e-4b24a3592064",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:46:17.462Z"
+      },
+      {
+        "content": "security and performance",
+        "id": "user-fb15f977-53ef-482b-878b-67d8acd27633",
+        "role": "user",
+        "timestamp": "2026-04-09T23:46:24.348Z"
+      },
+      {
+        "content": "What known risks, blockers, or external dependencies should be documented for this loan duration calculation feature?",
+        "id": "assistant-849fe76c-1973-4fc7-8366-3e02251efd8e",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:46:26.249Z"
+      },
+      {
+        "content": "none currently",
+        "id": "user-f2e1dab3-3401-4ccc-97b7-0b46bd696f36",
+        "role": "user",
+        "timestamp": "2026-04-09T23:46:35.861Z"
+      },
+      {
+        "content": "Drafting the requirement brief now based on the information provided.",
+        "id": "assistant-30b610da-096c-4300-9d9f-ece5d6aaa9f0",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:46:39.280Z"
+      }
+    ],
+    "collectedContext": {
+      "business_context": "The business needs faster quoting so end customers and internal staff can quickly obtain loan duration estimates without manual calculation.",
+      "functional_requirements": "The system must calculate loan duration using monthly rate, loan amount, and interest rate. The system must accept the required input values for the calculation. The system must return the calculated loan duration in a normal time format. No additional calculation rules are required beyond the stated inputs.",
+      "goal": "Provide a new feature that calculates loan duration based on monthly rate, loan amount, and interest rate to support faster quoting.",
+      "non_functional_requirements": "Security and performance",
+      "risks_and_dependencies": "No known risks or external dependencies currently identified.",
+      "users": "End customers and internal staff"
+    },
+    "createdAt": "2026-04-09T23:45:04.527Z",
+    "language": "en",
+    "lastError": "I could not apply the requested changes because one selected text snippet was not found in the document.",
+    "pendingComments": [
+      {
+        "commentText": "management also",
+        "contextAfter": "",
+        "contextBefore": "",
+        "createdAt": "2026-04-09T23:46:51.002Z",
+        "id": "comment-6edc949f-2150-4138-9677-d740036686ee",
+        "selectedText": "End customers\nInternal staff"
+      }
+    ],
+    "phase": "review",
+    "revisions": [
+      {
+        "createdAt": "2026-04-09T23:46:39.281Z",
+        "id": "rev-05da022f-a39e-490a-af47-9f570141b47c",
+        "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration based on monthly rate, loan amount, and interest rate to support faster quoting.\n\n## Business Context\nThe business needs faster quoting so end customers and internal staff can quickly obtain loan duration estimates without manual calculation.\n\n## Users\n- End customers\n- Internal staff\n\n## Functional Requirements\n- The system must calculate loan duration using monthly rate, loan amount, and interest rate.\n- The system must accept the required input values for the calculation.\n- The system must return the calculated loan duration in a normal time format.\n- No additional calculation rules are required beyond the stated inputs.\n\n## Non-Functional Requirements\n- Security\n- Performance\n\n## Risks and Dependencies\n- No known risks or external dependencies currently identified.\n\n## Open Questions\n- None currently identified.",
+        "source": "generated"
+      }
+    ],
+    "schemaVersion": 1,
+    "sessionId": "session-89b94125-e2c6-4a73-98fa-df56bf937caa",
+    "status": "error",
+    "templateId": "business-requirements-v1",
+    "updatedAt": "2026-04-09T23:46:55.555Z"
+  }
+}

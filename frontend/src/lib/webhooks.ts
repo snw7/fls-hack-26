@@ -1,11 +1,12 @@
 import { z } from 'zod';
+import type { SessionState } from '../types';
 
 const discoveryResponseSchema = z.object({
   status: z.enum(['needs_user_input', 'ready']),
   assistant_message: z.string(),
   document_ready: z.boolean(),
   markdown: z.string().nullable(),
-  collected_context: z.record(z.string(), z.string()).default({}),
+  collected_context: z.record(z.string(), z.string().nullable()).default({}),
 });
 
 const revisionUpdatedSchema = z.object({
@@ -26,12 +27,20 @@ const revisionResponseSchema = z.union([
   revisionErrorSchema,
 ]);
 
+const exportSessionResponseSchema = z.object({
+  status: z.literal('saved'),
+  session_id: z.string(),
+  file_path: z.string().min(1),
+  saved_at: z.string().min(1),
+});
+
 export interface DiscoveryRequest {
   session_id: string;
   mode: 'continue_or_generate';
   template: {
     id: string;
     content: string;
+    fields?: Array<{ key: string; label: string; description: string }>;
   };
   chat_history: Array<{
     role: 'user' | 'assistant';
@@ -57,8 +66,13 @@ export interface RevisionRequest {
   output_format: 'json';
 }
 
+export interface ExportSessionRequest {
+  session: SessionState;
+}
+
 export type DiscoveryResponse = z.infer<typeof discoveryResponseSchema>;
 export type RevisionResponse = z.infer<typeof revisionResponseSchema>;
+export type ExportSessionResponse = z.infer<typeof exportSessionResponseSchema>;
 
 async function postJson<T>(
   url: string,
@@ -98,10 +112,19 @@ async function postJson<T>(
     if (
       parsedPayload &&
       typeof parsedPayload === 'object' &&
-      'detail' in parsedPayload &&
-      typeof parsedPayload.detail === 'string'
+      'detail' in parsedPayload
     ) {
-      throw new Error(parsedPayload.detail);
+      const detail = parsedPayload.detail;
+      if (typeof detail === 'string') {
+        throw new Error(detail);
+      }
+      if (Array.isArray(detail)) {
+        const messages = detail.map((err: { msg?: string; loc?: unknown[] }) => {
+          const loc = err.loc ? err.loc.join(' → ') : '';
+          return loc ? `${loc}: ${err.msg}` : (err.msg ?? 'Unknown error');
+        });
+        throw new Error(messages.join('; '));
+      }
     }
 
     throw new Error(`Webhook request failed with ${response.status}.`);
@@ -118,6 +141,10 @@ export function parseRevisionResponse(value: unknown): RevisionResponse {
   return revisionResponseSchema.parse(value);
 }
 
+export function parseExportSessionResponse(value: unknown): ExportSessionResponse {
+  return exportSessionResponseSchema.parse(value);
+}
+
 export function callDiscoveryAgent(
   url: string,
   payload: DiscoveryRequest,
@@ -132,4 +159,22 @@ export function callRevisionAgent(
   fetcher?: typeof fetch
 ): Promise<RevisionResponse> {
   return postJson(url, payload, parseRevisionResponse, fetcher);
+}
+
+export function callExportSession(
+  baseUrl: string,
+  sessionId: string,
+  payload: ExportSessionRequest,
+  fetcher?: typeof fetch
+): Promise<ExportSessionResponse> {
+  const normalizedBaseUrl = baseUrl.endsWith('/')
+    ? baseUrl.slice(0, -1)
+    : baseUrl;
+
+  return postJson(
+    `${normalizedBaseUrl}/${encodeURIComponent(sessionId)}/export-json`,
+    payload,
+    parseExportSessionResponse,
+    fetcher
+  );
 }

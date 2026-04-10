@@ -260,6 +260,12 @@ button:disabled {
   gap: 16px;
 }
 
+.document-toolbar__actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
 .card-label {
   margin: 0 0 8px;
   color: var(--accent);
@@ -293,6 +299,19 @@ button:disabled {
 .message-meta,
 .diff-block__label {
   color: var(--muted);
+}
+
+.save-feedback {
+  margin: 8px 0 0;
+  font-weight: 600;
+}
+
+.save-feedback--success {
+  color: var(--success-deep);
+}
+
+.save-feedback--error {
+  color: var(--danger-deep);
 }
 
 .status-banner {
@@ -502,6 +521,30 @@ button:focus-visible {
 .step-list li.is-complete::before {
   background: var(--accent-soft);
   color: var(--accent);
+}
+
+.field-progress {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 24px;
+  margin-bottom: 8px;
+}
+
+.field-chip {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(119, 129, 141, 0.2);
+  color: var(--muted);
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.field-chip--filled {
+  background: rgba(0, 200, 120, 0.1);
+  border-color: rgba(0, 200, 120, 0.4);
+  color: #00c878;
 }
 
 .context-chip-list {
@@ -779,4 +822,3 @@ button:focus-visible {
     width: auto;
   }
 }
-

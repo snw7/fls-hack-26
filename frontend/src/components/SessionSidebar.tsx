@@ -57,19 +57,21 @@ export function SessionSidebar({ state }: SessionSidebarProps) {
 
       <section className="info-card">
         <p className="card-label">Captured context</p>
-        {Object.keys(state.collectedContext).length === 0 ? (
+        {Object.values(state.collectedContext).every((v) => v === null) ? (
           <p className="muted-copy">
             Facts extracted by the webhook flow will accumulate here as the
             clarification advances.
           </p>
         ) : (
           <div className="context-chip-list">
-            {Object.entries(state.collectedContext).map(([key, value]) => (
-              <div key={key} className="context-chip">
-                <span>{key}</span>
-                <strong>{value}</strong>
-              </div>
-            ))}
+            {Object.entries(state.collectedContext)
+              .filter(([, value]) => value !== null && value.trim() !== '')
+              .map(([key, value]) => (
+                <div key={key} className="context-chip">
+                  <span>{key}</span>
+                  <strong>{value}</strong>
+                </div>
+              ))}
           </div>
         )}
       </section>

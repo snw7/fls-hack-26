@@ -1,0 +1,186 @@
+{
+  "current_markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration based on monthly rate, loan amount, and interest rate.\n\n## Business Context\nThe feature is needed to improve quality of life for customers by giving them multiple options for different calculations.\n\n## Users\n- Customers\n- Internal staff\n\n## Functional Requirements\n- The system must accept loan-related inputs needed to calculate loan duration.\n- The system must calculate the loan duration based on monthly rate, loan amount, and interest rate.\n- The system must return only the loan duration as the output.\n- The system should include validation and formatting support for user input and displayed results.\n\n## Non-Functional Requirements\n- Performance is the main non-functional requirement.\n\n## Risks and Dependencies\n- No known risks or external dependencies have been identified at this time.\n\n## Open Questions\n- What are the specific allowed number formats?\n- What exact error messages should be shown for invalid input?\n- What validation rules should apply to the inputs?\n- Should the loan duration be displayed in months, years, or another format?",
+  "current_revision": {
+    "createdAt": "2026-04-09T23:38:35.505Z",
+    "id": "rev-d118d397-5dbb-481b-9184-16684a4f65fc",
+    "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration based on monthly rate, loan amount, and interest rate.\n\n## Business Context\nThe feature is needed to improve quality of life for customers by giving them multiple options for different calculations.\n\n## Users\n- Customers\n- Internal staff\n\n## Functional Requirements\n- The system must accept loan-related inputs needed to calculate loan duration.\n- The system must calculate the loan duration based on monthly rate, loan amount, and interest rate.\n- The system must return only the loan duration as the output.\n- The system should include validation and formatting support for user input and displayed results.\n\n## Non-Functional Requirements\n- Performance is the main non-functional requirement.\n\n## Risks and Dependencies\n- No known risks or external dependencies have been identified at this time.\n\n## Open Questions\n- What are the specific allowed number formats?\n- What exact error messages should be shown for invalid input?\n- What validation rules should apply to the inputs?\n- Should the loan duration be displayed in months, years, or another format?",
+    "source": "generated"
+  },
+  "exported_at": "2026-04-09T23:39:10.085030+00:00",
+  "latest_change_summary": [],
+  "schema_version": 1,
+  "session": {
+    "changeSummary": [],
+    "chatHistory": [
+      {
+        "content": "Describe the business requirement, the target users, and the outcome you need. I will turn that into a structured markdown brief you can refine.",
+        "id": "assistant-b4201057-9281-4911-9ff6-148cea462921",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:34:12.857Z"
+      },
+      {
+        "content": "I want a new feature that calculates the loan duration based on monthly rate, loan amount and interest rate.",
+        "id": "user-c623813a-bcaf-47a5-8ba6-684f6922e149",
+        "role": "user",
+        "timestamp": "2026-04-09T23:35:52.291Z"
+      },
+      {
+        "content": "What business problem or driver is this loan duration calculation feature meant to solve, and why is it needed now?",
+        "id": "assistant-f68d2f37-da4f-47fe-90d8-2d62fe118331",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:35:55.380Z"
+      },
+      {
+        "content": "to improve quality of life for customers, so they have multiple options for different calculations.",
+        "id": "user-d787ff3d-0c1c-42df-a802-05421b428f38",
+        "role": "user",
+        "timestamp": "2026-04-09T23:36:19.515Z"
+      },
+      {
+        "content": "Who are the target users or actors for this feature (for example, retail customers, loan officers, or internal staff)?",
+        "id": "assistant-8d79a53a-6233-46bc-811c-306be8e96079",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:36:22.090Z"
+      },
+      {
+        "content": "customers and internal staff",
+        "id": "user-10ad543f-25ea-433c-96cf-56ac8f625f05",
+        "role": "user",
+        "timestamp": "2026-04-09T23:36:30.781Z"
+      },
+      {
+        "content": "What exactly should the feature do: what inputs must users provide, what calculation/output should the system return, and are there any validation or display requirements?",
+        "id": "assistant-8f0ace7b-9b70-4d9f-9f8c-5b0e39cfbc46",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:36:33.105Z"
+      },
+      {
+        "content": "I want a new feature that calculates the loan duration based on monthly rate, loan amount and interest rate.",
+        "id": "user-14ba70e7-5c6a-432f-a037-585397501082",
+        "role": "user",
+        "timestamp": "2026-04-09T23:36:47.389Z"
+      },
+      {
+        "content": "What exact inputs, calculation rules, and output should the loan duration feature provide (including any validation or formatting requirements)?",
+        "id": "assistant-19610f68-da48-4d59-b126-b4ae636009c5",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:36:50.409Z"
+      },
+      {
+        "content": "yes validation and formatting requirements would be great",
+        "id": "user-42dcb674-3850-4e60-aaf2-adb58c2110a9",
+        "role": "user",
+        "timestamp": "2026-04-09T23:37:12.614Z"
+      },
+      {
+        "content": "What specific validation and formatting rules should apply to the loan duration calculation (for example, required input ranges, allowed number formats, error messages, and how the result should be displayed)?",
+        "id": "assistant-9fb9ac7b-740a-4b6c-92b7-cc48e1ca29e8",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:37:16.452Z"
+      },
+      {
+        "content": "allowed number formats and error messages",
+        "id": "user-0ccb2e5f-e596-471b-a260-8013cfbb9a5b",
+        "role": "user",
+        "timestamp": "2026-04-09T23:37:29.580Z"
+      },
+      {
+        "content": "What are the specific allowed number formats and the exact error messages the system should show for invalid loan duration inputs?",
+        "id": "assistant-45bcbe53-b80a-4fbf-a3d9-18591e6b8faf",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:37:32.117Z"
+      },
+      {
+        "content": "thats up to the development and not relevant currently",
+        "id": "user-8fd9723d-4e5b-473b-b3b0-a39f08a5f724",
+        "role": "user",
+        "timestamp": "2026-04-09T23:37:53.947Z"
+      },
+      {
+        "content": "What should the feature output to the user after calculating loan duration (for example, months, years, a repayment schedule, or a simple duration value)?",
+        "id": "assistant-95c73d80-51b7-4b41-a2a8-b5ec3a84517c",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:37:56.286Z"
+      },
+      {
+        "content": "only the loan duration",
+        "id": "user-372e94dd-d4e2-4f52-8c36-0398d290514a",
+        "role": "user",
+        "timestamp": "2026-04-09T23:38:10.520Z"
+      },
+      {
+        "content": "What non-functional requirements should apply to this feature, such as performance, security, auditability, or regulatory compliance expectations?",
+        "id": "assistant-03594e39-861f-43b2-92c1-9ef3202c1152",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:38:13.100Z"
+      },
+      {
+        "content": "performance mainly",
+        "id": "user-29f4532f-26be-4683-b127-e948bc735a7b",
+        "role": "user",
+        "timestamp": "2026-04-09T23:38:21.269Z"
+      },
+      {
+        "content": "What known risks, blockers, or external dependencies should be noted for this loan duration feature (for example, dependent systems, data sources, or implementation constraints)?",
+        "id": "assistant-d427f525-6c24-4a9b-b928-c408b02130cc",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:38:23.816Z"
+      },
+      {
+        "content": "none at the moment",
+        "id": "user-aae24087-9ee5-4a72-b5f2-b8ee6b01c1a1",
+        "role": "user",
+        "timestamp": "2026-04-09T23:38:30.324Z"
+      },
+      {
+        "content": "I’ve captured the requirements and drafted the brief. You can review and refine it as needed.",
+        "id": "assistant-fac8435e-e217-41f8-86ed-b22111ef594d",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:38:35.505Z"
+      }
+    ],
+    "collectedContext": {
+      "business_context": "The feature is needed to improve quality of life for customers by giving them multiple options for different calculations.",
+      "functional_requirements": "The system must accept loan-related inputs needed to calculate loan duration; calculate loan duration based on monthly rate, loan amount, and interest rate; return only the loan duration as the output; and include validation and formatting support for user input and displayed results.",
+      "goal": "Provide a new feature that calculates loan duration based on monthly rate, loan amount, and interest rate.",
+      "non_functional_requirements": "Performance is the main non-functional requirement.",
+      "risks_and_dependencies": "No known risks or external dependencies have been identified at this time.",
+      "users": "Customers and internal staff"
+    },
+    "createdAt": "2026-04-09T23:34:12.856Z",
+    "language": "en",
+    "lastError": "I could not apply the requested changes because one selected text snippet was not found in the document.",
+    "pendingComments": [
+      {
+        "commentText": "also management",
+        "contextAfter": "",
+        "contextBefore": "",
+        "createdAt": "2026-04-09T23:38:47.403Z",
+        "id": "comment-ac3a3793-015e-4d76-864a-1523724d5fbb",
+        "selectedText": "Customers\nInternal staff"
+      },
+      {
+        "commentText": "security also",
+        "contextAfter": "\n\n## Risks and Dependencies\n- No known risks or external",
+        "contextBefore": "nd displayed results.\n\n## Non-Functional Requirements\n- ",
+        "createdAt": "2026-04-09T23:39:02.377Z",
+        "id": "comment-f3300868-d592-40d6-a042-d95fec0b7818",
+        "selectedText": "Performance is the main non-functional requirement."
+      }
+    ],
+    "phase": "review",
+    "revisions": [
+      {
+        "createdAt": "2026-04-09T23:38:35.505Z",
+        "id": "rev-d118d397-5dbb-481b-9184-16684a4f65fc",
+        "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration based on monthly rate, loan amount, and interest rate.\n\n## Business Context\nThe feature is needed to improve quality of life for customers by giving them multiple options for different calculations.\n\n## Users\n- Customers\n- Internal staff\n\n## Functional Requirements\n- The system must accept loan-related inputs needed to calculate loan duration.\n- The system must calculate the loan duration based on monthly rate, loan amount, and interest rate.\n- The system must return only the loan duration as the output.\n- The system should include validation and formatting support for user input and displayed results.\n\n## Non-Functional Requirements\n- Performance is the main non-functional requirement.\n\n## Risks and Dependencies\n- No known risks or external dependencies have been identified at this time.\n\n## Open Questions\n- What are the specific allowed number formats?\n- What exact error messages should be shown for invalid input?\n- What validation rules should apply to the inputs?\n- Should the loan duration be displayed in months, years, or another format?",
+        "source": "generated"
+      }
+    ],
+    "schemaVersion": 1,
+    "sessionId": "session-209f95be-6d1f-4fba-8b00-06e2a4998ffd",
+    "status": "error",
+    "templateId": "business-requirements-v1",
+    "updatedAt": "2026-04-09T23:39:03.810Z"
+  }
+}

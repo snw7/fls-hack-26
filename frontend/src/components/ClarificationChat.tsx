@@ -1,9 +1,15 @@
+import {
+  allFieldsFilled,
+  requirementFields,
+  type RequirementsContext,
+} from '../data/template';
 import type { ChatMessage } from '../types';
 
 interface ClarificationChatProps {
   messages: ChatMessage[];
   value: string;
   busy: boolean;
+  collectedContext: RequirementsContext;
   onChange: (value: string) => void;
   onSubmit: () => void;
   onGenerateDraft: () => void;
@@ -13,10 +19,19 @@ export function ClarificationChat({
   messages,
   value,
   busy,
+  collectedContext,
   onChange,
   onSubmit,
   onGenerateDraft,
 }: ClarificationChatProps) {
+  const filledCount = requirementFields.filter(
+    (f) =>
+      collectedContext[f.key] !== null &&
+      collectedContext[f.key]!.trim() !== ''
+  ).length;
+  const totalCount = requirementFields.length;
+  const canGenerateDraft = allFieldsFilled(collectedContext);
+
   return (
     <section className="panel chat-panel">
       <div className="panel-header">
@@ -24,14 +39,41 @@ export function ClarificationChat({
           <p className="card-label">Clarification</p>
           <h2>Shape the requirement before it becomes a document</h2>
         </div>
-        <button
-          type="button"
-          className="secondary-button"
-          onClick={onGenerateDraft}
-          disabled={busy || messages.length < 2}
-        >
-          Create first draft
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <span className="muted-copy" style={{ whiteSpace: 'nowrap' }}>
+            {filledCount}/{totalCount} fields
+          </span>
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={onGenerateDraft}
+            disabled={busy || !canGenerateDraft}
+            title={
+              canGenerateDraft
+                ? 'Generate the first markdown draft'
+                : `${totalCount - filledCount} required field(s) still missing`
+            }
+          >
+            Create first draft
+          </button>
+        </div>
+      </div>
+
+      <div className="field-progress">
+        {requirementFields.map((f) => {
+          const filled =
+            collectedContext[f.key] !== null &&
+            collectedContext[f.key]!.trim() !== '';
+          return (
+            <span
+              key={f.key}
+              className={`field-chip ${filled ? 'field-chip--filled' : ''}`}
+              title={filled ? collectedContext[f.key]! : f.description}
+            >
+              {f.label}
+            </span>
+          );
+        })}
       </div>
 
       <div className="message-list" aria-live="polite">

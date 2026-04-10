@@ -20,9 +20,13 @@ interface DocumentReviewPaneProps {
   diffBlocks: DiffBlock[];
   diffStats: DiffStats;
   busy: boolean;
+  saveBusy: boolean;
+  saveStatus: 'idle' | 'saving' | 'saved' | 'error';
+  saveMessage: string | null;
   onAddComment: (comment: Omit<PendingComment, 'id' | 'createdAt'>) => void;
   onRemoveComment: (id: string) => void;
   onSubmitRevision: () => void;
+  onSaveJson: () => void;
 }
 
 export function DocumentReviewPane({
@@ -33,9 +37,13 @@ export function DocumentReviewPane({
   diffBlocks,
   diffStats,
   busy,
+  saveBusy,
+  saveStatus,
+  saveMessage,
   onAddComment,
   onRemoveComment,
   onSubmitRevision,
+  onSaveJson,
 }: DocumentReviewPaneProps) {
   const reviewSurfaceRef = useRef<HTMLElement>(null);
   const [selectionDraft, setSelectionDraft] = useState<SelectionDraft | null>(null);
@@ -78,13 +86,13 @@ export function DocumentReviewPane({
     }
 
     const rect = range.getBoundingClientRect();
-    const { contextBefore, contextAfter } = buildSelectionContext(
+    const { matchedText, contextBefore, contextAfter } = buildSelectionContext(
       markdown,
       selectedText
     );
 
     setSelectionDraft({
-      selectedText,
+      selectedText: matchedText,
       contextBefore,
       contextAfter,
       top: Math.min(rect.bottom + 14, window.innerHeight - 220),
@@ -125,14 +133,38 @@ export function DocumentReviewPane({
         </div>
 
         <div className="document-toolbar">
-          <p className="muted-copy">
-            Select any meaningful span in the document and attach a comment to
-            drive the next revision.
-          </p>
-          <div className="diff-stats">
-            <span>{diffStats.addedLines} added</span>
-            <span>{diffStats.removedLines} removed</span>
-            <span>{diffStats.changedSections} changed blocks</span>
+          <div>
+            <p className="muted-copy">
+              Select any meaningful span in the document and attach a comment to
+              drive the next revision.
+            </p>
+            {saveMessage ? (
+              <p
+                className={`save-feedback ${
+                  saveStatus === 'error'
+                    ? 'save-feedback--error'
+                    : 'save-feedback--success'
+                }`}
+                aria-live="polite"
+              >
+                {saveMessage}
+              </p>
+            ) : null}
+          </div>
+          <div className="document-toolbar__actions">
+            <button
+              type="button"
+              className="secondary-button"
+              disabled={busy || saveBusy || revisionCount === 0}
+              onClick={onSaveJson}
+            >
+              {saveBusy ? 'Saving…' : 'Save JSON'}
+            </button>
+            <div className="diff-stats">
+              <span>{diffStats.addedLines} added</span>
+              <span>{diffStats.removedLines} removed</span>
+              <span>{diffStats.changedSections} changed blocks</span>
+            </div>
           </div>
         </div>
 
@@ -274,4 +306,3 @@ export function DocumentReviewPane({
     </section>
   );
 }
-

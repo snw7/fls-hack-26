@@ -1,0 +1,161 @@
+{
+  "current_markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration from monthly rate, loan amount, and interest rate.\n\n## Business Context\nThis feature is intended as a quality-of-life improvement for customers and internal staff, helping them quickly estimate loan duration without manual calculation.\n\n## Users\n- Management\n- Customers\n- Internal staff\n\n## Functional Requirements\n- The system must accept the following inputs:\n  - Monthly rate\n  - Loan amount\n  - Interest rate\n- The system must calculate the loan duration based on the provided inputs.\n- The system must return the calculated duration with two decimal rounding.\n\n## Non-Functional Requirements\n- Security\n- Performance\n\n## Risks and Dependencies\n- No known risks or dependencies identified at this time.\n\n## Open Questions\n- None identified at this time.",
+  "current_revision": {
+    "createdAt": "2026-04-10T00:03:19.800Z",
+    "id": "rev-41f6bfca-403c-45b2-83f1-b141a195cbd1",
+    "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration from monthly rate, loan amount, and interest rate.\n\n## Business Context\nThis feature is intended as a quality-of-life improvement for customers and internal staff, helping them quickly estimate loan duration without manual calculation.\n\n## Users\n- Management\n- Customers\n- Internal staff\n\n## Functional Requirements\n- The system must accept the following inputs:\n  - Monthly rate\n  - Loan amount\n  - Interest rate\n- The system must calculate the loan duration based on the provided inputs.\n- The system must return the calculated duration with two decimal rounding.\n\n## Non-Functional Requirements\n- Security\n- Performance\n\n## Risks and Dependencies\n- No known risks or dependencies identified at this time.\n\n## Open Questions\n- None identified at this time.",
+    "source": "revised"
+  },
+  "exported_at": "2026-04-10T00:03:34.513088+00:00",
+  "latest_change_summary": [
+    "Added customers and internal staff to the Users list."
+  ],
+  "schema_version": 1,
+  "session": {
+    "changeSummary": [
+      "Added customers and internal staff to the Users list."
+    ],
+    "chatHistory": [
+      {
+        "content": "Describe the business requirement, the target users, and the outcome you need. I will turn that into a structured markdown brief you can refine.",
+        "id": "assistant-48680c8d-8c3c-4398-b5ca-c17101393ce6",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:58:20.654Z"
+      },
+      {
+        "content": "I want a new feature that calculates the loan duration based on monthly rate, loan amount and interest rate.",
+        "id": "user-dcfaa48e-cc8f-46e0-8a4d-1e377ad8e69f",
+        "role": "user",
+        "timestamp": "2026-04-09T23:58:34.685Z"
+      },
+      {
+        "content": "What business problem or driver is this loan-duration calculation feature meant to solve, and who will use it?",
+        "id": "assistant-bb0c99dd-a2fc-4a6e-b606-08235fba1d5a",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:58:37.495Z"
+      },
+      {
+        "content": "customers and internal staff will use it. \nthe actual use case is quality of life.",
+        "id": "user-f811dce5-0fb8-4d3f-b95d-5c37c27a7bb8",
+        "role": "user",
+        "timestamp": "2026-04-09T23:59:04.772Z"
+      },
+      {
+        "content": "What should the system do exactly when calculating the loan duration, including the expected input/output and any calculation rules or edge cases?",
+        "id": "assistant-5b9328d9-d6b8-4841-9f5e-9a413b33b407",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:59:09.123Z"
+      },
+      {
+        "content": "input: \nmonthly rate, loan amount and interest rate.",
+        "id": "user-cdf6d444-53a2-4216-82ae-9f391edbf42d",
+        "role": "user",
+        "timestamp": "2026-04-09T23:59:28.131Z"
+      },
+      {
+        "content": "What should the system return from the calculation, and are there any specific calculation rules or edge cases it must follow (for example rounding, minimum/maximum duration, or invalid input handling)?",
+        "id": "assistant-1fa67375-4690-4f2d-a4f5-62e56cbf1da3",
+        "role": "assistant",
+        "timestamp": "2026-04-09T23:59:31.552Z"
+      },
+      {
+        "content": "example rounding",
+        "id": "user-3960ab68-fb27-4a06-b603-0e1aa569482e",
+        "role": "user",
+        "timestamp": "2026-04-10T00:02:00.379Z"
+      },
+      {
+        "content": "What should the system return for the loan-duration calculation, and what rounding rule should it apply to the result (for example, round up to the nearest month, round to the nearest whole month, or keep decimals)?",
+        "id": "assistant-c72c5599-dd42-4856-baa6-413d5e38a4e6",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:02:04.637Z"
+      },
+      {
+        "content": "two decimal rounding.",
+        "id": "user-5ff494c2-6efc-4f25-a293-d6695b5ffcae",
+        "role": "user",
+        "timestamp": "2026-04-10T00:02:19.742Z"
+      },
+      {
+        "content": "What non-functional requirements should apply to this feature, such as performance, security, auditability, or regulatory/compliance expectations?",
+        "id": "assistant-3b0e9bdb-8ea2-4774-a9b4-f9832d63c64f",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:02:23.479Z"
+      },
+      {
+        "content": "security and performance",
+        "id": "user-c357dcb5-ea98-4e46-82e7-367796ad458c",
+        "role": "user",
+        "timestamp": "2026-04-10T00:02:31.492Z"
+      },
+      {
+        "content": "What known risks, blockers, or external dependencies should be noted for this loan-duration calculation feature?",
+        "id": "assistant-4bbcaa11-ecd3-433f-b719-c92f327ed94d",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:02:33.927Z"
+      },
+      {
+        "content": "none at the moment",
+        "id": "user-238a7ce2-2577-443f-85ed-7ddeeaacb616",
+        "role": "user",
+        "timestamp": "2026-04-10T00:02:39.321Z"
+      },
+      {
+        "content": "Here is the first draft of the requirement brief based on the information provided.",
+        "id": "assistant-800d98cf-7dd4-40eb-9197-4c1244a2251e",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:02:43.017Z"
+      },
+      {
+        "content": "Updated the Users section to reflect the requested change to management.",
+        "id": "assistant-edd21e6f-d68c-49a1-9b0f-0e7c436bec61",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:03:02.487Z"
+      },
+      {
+        "content": "Updated the Users section to include customers and internal staff.",
+        "id": "assistant-92f42620-48ac-4a1d-a6ff-9ddba44a8a10",
+        "role": "assistant",
+        "timestamp": "2026-04-10T00:03:19.800Z"
+      }
+    ],
+    "collectedContext": {
+      "business_context": "This feature is intended as a quality-of-life improvement for customers and internal staff, helping them quickly estimate loan duration without manual calculation.",
+      "functional_requirements": "The system must accept monthly rate, loan amount, and interest rate as inputs; calculate the loan duration; and return the result rounded to two decimal places.",
+      "goal": "Provide a new feature that calculates loan duration from monthly rate, loan amount, and interest rate.",
+      "non_functional_requirements": "Security and performance",
+      "risks_and_dependencies": "No known risks or dependencies identified at this time.",
+      "users": "Customers and internal staff"
+    },
+    "createdAt": "2026-04-09T23:58:20.653Z",
+    "language": "en",
+    "lastError": null,
+    "pendingComments": [],
+    "phase": "review",
+    "revisions": [
+      {
+        "createdAt": "2026-04-10T00:02:43.018Z",
+        "id": "rev-3a90f80b-48db-45e4-8e52-4e319738cfa1",
+        "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration from monthly rate, loan amount, and interest rate.\n\n## Business Context\nThis feature is intended as a quality-of-life improvement for customers and internal staff, helping them quickly estimate loan duration without manual calculation.\n\n## Users\n- Customers\n- Internal staff\n\n## Functional Requirements\n- The system must accept the following inputs:\n  - Monthly rate\n  - Loan amount\n  - Interest rate\n- The system must calculate the loan duration based on the provided inputs.\n- The system must return the calculated duration with two decimal rounding.\n\n## Non-Functional Requirements\n- Security\n- Performance\n\n## Risks and Dependencies\n- No known risks or dependencies identified at this time.\n\n## Open Questions\n- None identified at this time.",
+        "source": "generated"
+      },
+      {
+        "createdAt": "2026-04-10T00:03:02.487Z",
+        "id": "rev-c55222d2-ae66-4ed5-8455-f617022c8a42",
+        "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration from monthly rate, loan amount, and interest rate.\n\n## Business Context\nThis feature is intended as a quality-of-life improvement for customers and internal staff, helping them quickly estimate loan duration without manual calculation.\n\n## Users\n- Management\n\n## Functional Requirements\n- The system must accept the following inputs:\n  - Monthly rate\n  - Loan amount\n  - Interest rate\n- The system must calculate the loan duration based on the provided inputs.\n- The system must return the calculated duration with two decimal rounding.\n\n## Non-Functional Requirements\n- Security\n- Performance\n\n## Risks and Dependencies\n- No known risks or dependencies identified at this time.\n\n## Open Questions\n- None identified at this time.",
+        "source": "revised"
+      },
+      {
+        "createdAt": "2026-04-10T00:03:19.800Z",
+        "id": "rev-41f6bfca-403c-45b2-83f1-b141a195cbd1",
+        "markdown": "# Requirement Brief\n\n## Goal\nProvide a new feature that calculates loan duration from monthly rate, loan amount, and interest rate.\n\n## Business Context\nThis feature is intended as a quality-of-life improvement for customers and internal staff, helping them quickly estimate loan duration without manual calculation.\n\n## Users\n- Management\n- Customers\n- Internal staff\n\n## Functional Requirements\n- The system must accept the following inputs:\n  - Monthly rate\n  - Loan amount\n  - Interest rate\n- The system must calculate the loan duration based on the provided inputs.\n- The system must return the calculated duration with two decimal rounding.\n\n## Non-Functional Requirements\n- Security\n- Performance\n\n## Risks and Dependencies\n- No known risks or dependencies identified at this time.\n\n## Open Questions\n- None identified at this time.",
+        "source": "revised"
+      }
+    ],
+    "schemaVersion": 1,
+    "sessionId": "session-1299c4e3-1106-45c5-a877-f4bae7e3e739",
+    "status": "ready",
+    "templateId": "business-requirements-v1",
+    "updatedAt": "2026-04-10T00:03:19.805Z"
+  }
+}
