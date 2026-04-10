@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -49,9 +49,34 @@ function Harness({
   );
 }
 
+function FocusHarness() {
+  const [value, setValue] = useState('Need a calculator');
+  const [busy, setBusy] = useState(false);
+
+  return (
+    <ClarificationChat
+      messages={[]}
+      value={value}
+      busy={busy}
+      collectedContext={createEmptyRequirementsContext()}
+      onChange={setValue}
+      onSubmit={() => {
+        setValue('');
+        setBusy(true);
+        window.setTimeout(() => {
+          setBusy(false);
+        }, 0);
+      }}
+      onGenerateDraft={() => undefined}
+      transcribeAudio={vi.fn()}
+    />
+  );
+}
+
 describe('ClarificationChat', () => {
   const originalMediaRecorder = globalThis.MediaRecorder;
   const originalMediaDevices = navigator.mediaDevices;
+  const originalScrollIntoView = Element.prototype.scrollIntoView;
 
   beforeEach(() => {
     Object.defineProperty(globalThis, 'MediaRecorder', {
@@ -62,6 +87,8 @@ describe('ClarificationChat', () => {
   });
 
   afterEach(() => {
+    cleanup();
+
     Object.defineProperty(globalThis, 'MediaRecorder', {
       configurable: true,
       writable: true,
@@ -71,6 +98,84 @@ describe('ClarificationChat', () => {
     Object.defineProperty(navigator, 'mediaDevices', {
       configurable: true,
       value: originalMediaDevices,
+    });
+
+    Object.defineProperty(Element.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: originalScrollIntoView,
+    });
+  });
+
+  it('scrolls the latest response into view when new chat messages arrive', async () => {
+    const scrollIntoView = vi.fn();
+
+    Object.defineProperty(Element.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: scrollIntoView,
+    });
+
+    const { rerender } = render(
+      <ClarificationChat
+        messages={[
+          {
+            id: 'assistant-1',
+            role: 'assistant',
+            content: 'Describe the business requirement.',
+            timestamp: '2026-04-10T10:00:00Z',
+          },
+          {
+            id: 'user-1',
+            role: 'user',
+            content: 'Need a loan-duration calculator.',
+            timestamp: '2026-04-10T10:01:00Z',
+          },
+        ]}
+        value=""
+        busy={false}
+        collectedContext={createEmptyRequirementsContext()}
+        onChange={() => undefined}
+        onSubmit={() => undefined}
+        onGenerateDraft={() => undefined}
+        transcribeAudio={vi.fn()}
+      />
+    );
+
+    const initialCalls = scrollIntoView.mock.calls.length;
+
+    rerender(
+      <ClarificationChat
+        messages={[
+          {
+            id: 'assistant-1',
+            role: 'assistant',
+            content: 'Describe the business requirement.',
+            timestamp: '2026-04-10T10:00:00Z',
+          },
+          {
+            id: 'user-1',
+            role: 'user',
+            content: 'Need a loan-duration calculator.',
+            timestamp: '2026-04-10T10:01:00Z',
+          },
+          {
+            id: 'assistant-2',
+            role: 'assistant',
+            content: 'Who will use this feature?',
+            timestamp: '2026-04-10T10:02:00Z',
+          },
+        ]}
+        value=""
+        busy={false}
+        collectedContext={createEmptyRequirementsContext()}
+        onChange={() => undefined}
+        onSubmit={() => undefined}
+        onGenerateDraft={() => undefined}
+        transcribeAudio={vi.fn()}
+      />
+    );
+
+    await waitFor(() => {
+      expect(scrollIntoView.mock.calls.length).toBeGreaterThan(initialCalls);
     });
   });
 
@@ -112,5 +217,24 @@ describe('ClarificationChat', () => {
     });
 
     expect(stopTrack).toHaveBeenCalledTimes(1);
+  });
+
+  it('restores focus to the textarea after sending with Enter', async () => {
+    const user = userEvent.setup();
+
+    render(<FocusHarness />);
+
+    const textarea = screen.getByLabelText(
+      'Clarification message'
+    ) as HTMLTextAreaElement;
+
+    textarea.focus();
+    expect(textarea).toHaveFocus();
+
+    await user.keyboard('{Enter}');
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Clarification message')).toHaveFocus();
+    });
   });
 });

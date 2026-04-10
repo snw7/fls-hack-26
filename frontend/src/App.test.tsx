@@ -30,6 +30,51 @@ describe('App integration', () => {
     cleanup();
   });
 
+  it('submits the clarification message when Enter is pressed', async () => {
+    const fetchMock = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          status: 'needs_user_input',
+          assistant_message: 'Who will use this feature?',
+          document_ready: false,
+          markdown: null,
+          collected_context: {
+            goal: 'Add a loan-duration calculator.',
+            business_context: null,
+            users: null,
+            functional_requirements: null,
+            non_functional_requirements: null,
+            risks_and_dependencies: null,
+          },
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    const textarea = screen.getByLabelText('Clarification message');
+    await user.type(textarea, 'Need a new loan-duration calculator.');
+    await user.keyboard('{Enter}');
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+    });
+
+    const [, init] = fetchMock.mock.calls[0];
+    expect(JSON.parse(String(init?.body))).toMatchObject({
+      latest_user_message: 'Need a new loan-duration calculator.',
+    });
+    expect(
+      await screen.findByText('Who will use this feature?')
+    ).toBeInTheDocument();
+  });
+
   it('shows backend validation errors in the new clarification UI', async () => {
     const fetchMock = vi.fn<typeof fetch>().mockResolvedValue(
       new Response(
@@ -64,7 +109,7 @@ describe('App integration', () => {
     ).toBeInTheDocument();
   });
 
-  it('saves JSON from review mode', async () => {
+  it('sends the ticket from review mode and shows the thank-you screen', async () => {
     window.localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({
@@ -124,7 +169,7 @@ describe('App integration', () => {
 
     render(<App />);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Save JSON' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Send ticket' }));
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -140,7 +185,15 @@ describe('App integration', () => {
     });
 
     expect(
-      await screen.findByText('Saved JSON to /app/data/requirements/session-123.json')
+      await screen.findByRole('heading', { name: 'Thank you' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Ticket sent. Requirements saved to /app/data/requirements/session-123.json'
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Start another brief' })
     ).toBeInTheDocument();
   });
 

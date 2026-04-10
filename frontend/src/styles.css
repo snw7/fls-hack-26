@@ -544,6 +544,63 @@ textarea:focus {
   font-size: 0.92rem;
 }
 
+.ticket-submitted {
+  width: min(100%, 780px);
+  margin: 0 auto;
+  padding: clamp(2rem, 4vw, 3.4rem);
+  border: 1px solid rgba(27, 125, 75, 0.14);
+  border-radius: 36px;
+  background:
+    radial-gradient(circle at top right, rgba(27, 125, 75, 0.1), transparent 34%),
+    rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-xl);
+}
+
+.ticket-submitted__eyebrow {
+  margin: 0 0 12px;
+  color: var(--success-deep);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ticket-submitted h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+  letter-spacing: -0.05em;
+}
+
+.ticket-submitted__lead,
+.ticket-submitted__copy,
+.ticket-submitted__meta {
+  max-width: 62ch;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.ticket-submitted__lead {
+  margin-top: 14px;
+  font-size: 1.08rem;
+  color: rgba(33, 33, 33, 0.82);
+}
+
+.ticket-submitted__copy {
+  margin-top: 12px;
+  color: var(--muted);
+}
+
+.ticket-submitted__meta {
+  margin-top: 20px;
+  color: var(--success-deep);
+  font-size: 0.96rem;
+  font-weight: 600;
+}
+
+.ticket-submitted__action {
+  margin-top: 28px;
+}
+
 .primary-button,
 .secondary-button,
 .ghost-button,

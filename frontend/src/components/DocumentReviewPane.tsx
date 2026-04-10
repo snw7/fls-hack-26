@@ -267,8 +267,9 @@ export function DocumentReviewPane({
               className="document-surface__save"
               disabled={busy || saveBusy || revisionCount === 0}
               onClick={onSaveJson}
+              aria-label={saveBusy ? 'Sending ticket' : 'Send ticket'}
             >
-              {saveBusy ? 'Saving…' : 'Save JSON'}
+              {saveBusy ? 'Sending…' : 'Send ticket'}
             </button>
             <button
               type="button"

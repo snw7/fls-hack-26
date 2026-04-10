@@ -63,12 +63,14 @@ export function ClarificationChat({
   const wavePhaseRef = useRef(0);
   const audioChunksRef = useRef<Blob[]>([]);
   const stopActionRef = useRef<'abort' | 'transcribe' | null>(null);
+  const shouldRestoreFocusRef = useRef(false);
   const selectionRef = useRef<SelectionRange>({
     start: value.length,
     end: value.length,
   });
   const pendingSelectionRef = useRef<SelectionRange | null>(null);
   const valueRef = useRef(value);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const introMessage =
     messages[0]?.role === 'assistant' ? messages[0].content : null;
   const formattedIntroMessage = formatIntroMessage(introMessage);
@@ -102,6 +104,39 @@ export function ClarificationChat({
     );
     selectionRef.current = nextSelection;
   }, [showRecorderPanel, value]);
+
+  useEffect(() => {
+    if (
+      busy ||
+      showRecorderPanel ||
+      !shouldRestoreFocusRef.current ||
+      !textareaRef.current
+    ) {
+      return;
+    }
+
+    shouldRestoreFocusRef.current = false;
+    textareaRef.current.focus();
+    const caretPosition = textareaRef.current.value.length;
+    textareaRef.current.setSelectionRange(caretPosition, caretPosition);
+  }, [busy, showRecorderPanel, value]);
+
+  useEffect(() => {
+    if (!messagesEndRef.current || (conversationMessages.length === 0 && !busy)) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      messagesEndRef.current?.scrollIntoView({
+        block: 'nearest',
+        behavior: 'smooth',
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [busy, conversationMessages.length, statusMessage]);
 
   useEffect(() => {
     return () => {
@@ -224,6 +259,15 @@ export function ClarificationChat({
       end: nextCaretPosition,
     };
     onChange(nextValue);
+  }
+
+  function submitMessage() {
+    if (busy || !value.trim()) {
+      return;
+    }
+
+    shouldRestoreFocusRef.current = document.activeElement === textareaRef.current;
+    onSubmit();
   }
 
   async function startRecording() {
@@ -412,6 +456,7 @@ export function ClarificationChat({
               <p>{message.content}</p>
             </article>
           ))}
+          <div ref={messagesEndRef} aria-hidden="true" />
         </div>
       ) : null}
 
@@ -419,7 +464,7 @@ export function ClarificationChat({
         className="composer"
         onSubmit={(event) => {
           event.preventDefault();
-          onSubmit();
+          submitMessage();
         }}
       >
         <div className="composer__surface">
@@ -515,6 +560,16 @@ export function ClarificationChat({
                 ref={textareaRef}
                 value={value}
                 onChange={(event) => onChange(event.target.value)}
+                onKeyDown={(event) => {
+                  if (
+                    event.key === 'Enter' &&
+                    !event.shiftKey &&
+                    !event.nativeEvent.isComposing
+                  ) {
+                    event.preventDefault();
+                    submitMessage();
+                  }
+                }}
                 onClick={rememberSelection}
                 onKeyUp={rememberSelection}
                 onSelect={rememberSelection}

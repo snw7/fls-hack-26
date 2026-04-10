@@ -3,6 +3,7 @@ import { AppShell } from './components/AppShell';
 import { ClarificationChat } from './components/ClarificationChat';
 import { DocumentReviewPane } from './components/DocumentReviewPane';
 import { StatusBanner } from './components/StatusBanner';
+import { TicketSubmittedPane } from './components/TicketSubmittedPane';
 import { requirementsTemplate } from './data/template';
 import type { RequirementsContext } from './data/template';
 import { usePersistentSession } from './hooks/usePersistentSession';
@@ -40,7 +41,7 @@ function mergeContext(
 }
 
 export default function App() {
-  const { state, setState } = usePersistentSession(
+  const { state, setState, reset } = usePersistentSession(
     runtimeConfig.defaultTemplateId
   );
   const [composerValue, setComposerValue] = useState('');
@@ -287,7 +288,7 @@ export default function App() {
     }
   }
 
-  async function handleSaveJson() {
+  async function handleSendTicket() {
     if (state.revisions.length === 0) {
       return;
     }
@@ -303,11 +304,18 @@ export default function App() {
 
       setSaveState({
         status: 'saved',
-        message: `Saved JSON to ${response.file_path}`,
+        message: `Ticket sent. Requirements saved to ${response.file_path}`,
       });
+      setState((current) => ({
+        ...current,
+        phase: 'submitted',
+        status: 'ready',
+        lastError: null,
+        updatedAt: toTimestamp(),
+      }));
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : 'The JSON save failed.';
+        error instanceof Error ? error.message : 'The ticket handoff failed.';
 
       setSaveState({
         status: 'error',
@@ -323,12 +331,25 @@ export default function App() {
       message={state.lastError}
     />
   ) : saveState.status === 'error' && saveState.message ? (
-    <StatusBanner tone="error" title="Save problem" message={saveState.message} />
+    <StatusBanner tone="error" title="Ticket problem" message={saveState.message} />
   ) : null;
+
+  function handleStartAnotherBrief() {
+    setComposerValue('');
+    setSaveState({ status: 'idle', message: null });
+    reset();
+  }
 
   return (
     <AppShell banner={banner}>
-      {state.phase === 'clarification' || !currentRevision ? (
+      {state.phase === 'submitted' ? (
+        <TicketSubmittedPane
+          confirmationMessage={
+            saveState.status === 'saved' ? saveState.message : null
+          }
+          onStartAnother={handleStartAnotherBrief}
+        />
+      ) : state.phase === 'clarification' || !currentRevision ? (
         <ClarificationChat
           messages={state.chatHistory}
           value={composerValue}
@@ -358,7 +379,7 @@ export default function App() {
           onAddComment={handleAddComment}
           onRemoveComment={handleRemoveComment}
           onSubmitRevision={handleSubmitRevision}
-          onSaveJson={handleSaveJson}
+          onSaveJson={handleSendTicket}
         />
       )}
     </AppShell>

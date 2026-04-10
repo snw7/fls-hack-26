@@ -43,6 +43,11 @@ def build_discovery_messages(request: DiscoveryRequest) -> list[dict[str, str]]:
         - When status is "needs_user_input", ask exactly one concrete question targeting the most important unfilled field.
         - When status is "ready", generate markdown that follows the provided template structure.
         - Preserve the template headings unless the request clearly justifies a small structural adjustment.
+        - When status is "ready", the markdown must read like a polished analyst brief, not a sparse outline.
+        - Expand shorthand notes into complete business-ready prose that stays faithful to the conversation.
+        - For each main section in the template, write substantive content in full sentences. Aim for at least 2 informative sentences per section when the available context supports it.
+        - Prefer short paragraphs over bare fragments. Use bullets only when they improve clarity, and make each bullet a full sentence.
+        - Make the draft feel complete and informative by connecting user goals, business rationale, actors, requirements, quality expectations, and dependencies into coherent narrative text.
         - Write assistant_message and markdown in {request.document_language.upper()}.
         """
     ).strip()

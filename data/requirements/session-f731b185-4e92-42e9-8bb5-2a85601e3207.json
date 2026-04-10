@@ -1,0 +1,133 @@
+{
+  "current_markdown": "# Requirement Brief\n\n## Goal\n\nThe goal of this change is to enhance the loan calculator so that, when a customer enters the loan duration, the calculator can determine and display the corresponding loan amount, monthly payment, and interest rate. This should provide customers with a clearer and more useful self-service experience when exploring loan options.\n\n## Business Context\n\nThis requirement is driven by a quality-of-life improvement for customers. The business need is to make the loan calculator more helpful and intuitive by allowing customers to understand key loan parameters from the loan duration input without requiring additional manual effort or assistance.\n\nBy improving the calculator experience, the bank can support better customer engagement and make the loan journey easier to understand. This may also reduce friction during product exploration and improve the overall digital experience for end users.\n\n## Users\n\nThe primary users are customers using the loan calculator in a digital banking context. These users are expected to input the loan duration and review the resulting loan-related outputs to support their borrowing decisions.\n\n## Functional Requirements\n\nThe loan calculator must accept loan duration as an input and use that input to calculate and display the loan amount, monthly payment, and interest rate. The system should present these outputs in a clear and understandable format for customers.\n\nThe calculator should respond correctly when the loan duration is entered or updated, ensuring the displayed results reflect the latest input. The calculation logic should support the expected customer journey of comparing loan scenarios based on duration.\n\n## Non-Functional Requirements\n\nThe solution must meet security and privacy expectations appropriate for a banking application. Customer input and any derived financial information must be handled securely and in accordance with applicable privacy requirements.\n\nThe feature should also be implemented in a way that preserves trust and reliability in the calculator experience. Results should be presented consistently and without exposing unnecessary personal or sensitive data.\n\n## Risks and Dependencies\n\nNo specific risks or external dependencies have been identified at this time. If calculation logic depends on existing pricing rules, product configuration, or interest rate models, those dependencies should be confirmed during implementation planning.\n\n## Open Questions\n\nNone at the moment.",
+  "current_revision": {
+    "createdAt": "2026-04-10T02:44:23.099Z",
+    "id": "rev-ee5a5fae-9dcc-4e65-817f-6a9072625fa3",
+    "markdown": "# Requirement Brief\n\n## Goal\n\nThe goal of this change is to enhance the loan calculator so that, when a customer enters the loan duration, the calculator can determine and display the corresponding loan amount, monthly payment, and interest rate. This should provide customers with a clearer and more useful self-service experience when exploring loan options.\n\n## Business Context\n\nThis requirement is driven by a quality-of-life improvement for customers. The business need is to make the loan calculator more helpful and intuitive by allowing customers to understand key loan parameters from the loan duration input without requiring additional manual effort or assistance.\n\nBy improving the calculator experience, the bank can support better customer engagement and make the loan journey easier to understand. This may also reduce friction during product exploration and improve the overall digital experience for end users.\n\n## Users\n\nThe primary users are customers using the loan calculator in a digital banking context. These users are expected to input the loan duration and review the resulting loan-related outputs to support their borrowing decisions.\n\n## Functional Requirements\n\nThe loan calculator must accept loan duration as an input and use that input to calculate and display the loan amount, monthly payment, and interest rate. The system should present these outputs in a clear and understandable format for customers.\n\nThe calculator should respond correctly when the loan duration is entered or updated, ensuring the displayed results reflect the latest input. The calculation logic should support the expected customer journey of comparing loan scenarios based on duration.\n\n## Non-Functional Requirements\n\nThe solution must meet security and privacy expectations appropriate for a banking application. Customer input and any derived financial information must be handled securely and in accordance with applicable privacy requirements.\n\nThe feature should also be implemented in a way that preserves trust and reliability in the calculator experience. Results should be presented consistently and without exposing unnecessary personal or sensitive data.\n\n## Risks and Dependencies\n\nNo specific risks or external dependencies have been identified at this time. If calculation logic depends on existing pricing rules, product configuration, or interest rate models, those dependencies should be confirmed during implementation planning.\n\n## Open Questions\n\nNone at the moment.",
+    "source": "generated"
+  },
+  "exported_at": "2026-04-10T02:44:29.793018+00:00",
+  "latest_change_summary": [],
+  "schema_version": 1,
+  "session": {
+    "changeSummary": [],
+    "chatHistory": [
+      {
+        "content": "Describe the business requirement, the target users, and the outcome you need.\nI will turn that into a structured markdown brief you can refine.",
+        "id": "assistant-fefaedcd-ac9f-4c4e-8218-dd25da0318bf",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:42:43.891Z"
+      },
+      {
+        "content": "Loan Calculator bei Loan Duration.",
+        "id": "user-1f6a73c2-02db-4ea9-88aa-c1347c0abaa0",
+        "role": "user",
+        "timestamp": "2026-04-10T02:42:58.498Z"
+      },
+      {
+        "content": "What exact change do you want for the loan calculator when loan duration is entered or changed, and what business outcome should it achieve?",
+        "id": "assistant-ae9352ca-32dc-47ad-bab3-607853507d32",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:43:00.487Z"
+      },
+      {
+        "content": "the output should be the loan duration.",
+        "id": "user-467a08dc-aa06-4d46-a771-c89f9b8456c9",
+        "role": "user",
+        "timestamp": "2026-04-10T02:43:12.363Z"
+      },
+      {
+        "content": "What is the business reason for this loan duration calculator change, and who will use it (for example, customers, relationship managers, or internal operations staff)?",
+        "id": "assistant-569e8ab1-3dd6-4995-b92f-723df4ab837e",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:43:15.306Z"
+      },
+      {
+        "content": "quality of life feature for customers",
+        "id": "user-ba7e1fb4-203c-4796-8195-484b6ddb0441",
+        "role": "user",
+        "timestamp": "2026-04-10T02:43:26.313Z"
+      },
+      {
+        "content": "What exactly should the loan calculator do when a user enters the loan duration, for example should it calculate and display the loan amount, monthly payment, or something else?",
+        "id": "assistant-b9c33355-35a1-4ce6-8186-ebe29bcbc2af",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:43:28.311Z"
+      },
+      {
+        "content": "loan amount, monthly payment and interest rate",
+        "id": "user-381669c2-e033-42ff-b265-47479f29d2c6",
+        "role": "user",
+        "timestamp": "2026-04-10T02:43:47.232Z"
+      },
+      {
+        "content": "What non-functional requirements should apply to this loan calculator change, such as performance, security, privacy, or regulatory/compliance expectations?",
+        "id": "assistant-86b3f63a-fd12-458d-a364-2355c741478e",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:43:49.898Z"
+      },
+      {
+        "content": "security and privacy",
+        "id": "user-e0c68f1f-14f2-4f40-819e-bec20ad678a6",
+        "role": "user",
+        "timestamp": "2026-04-10T02:43:55.551Z"
+      },
+      {
+        "content": "What risks, blockers, or external dependencies should be noted for this loan calculator change, if any?",
+        "id": "assistant-55112372-02e2-4184-8a8e-d1a1b457976c",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:43:57.517Z"
+      },
+      {
+        "content": "none at the moment",
+        "id": "user-1fe90932-b08e-448c-a9aa-42c204ba6624",
+        "role": "user",
+        "timestamp": "2026-04-10T02:44:05.575Z"
+      },
+      {
+        "content": "What is the primary outcome you want the loan calculator to deliver for the customer: should it mainly calculate the loan amount, the monthly payment, the interest rate, or all three from the entered loan duration?",
+        "id": "assistant-71246e42-4123-4e84-99e6-881a8235bd86",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:44:07.834Z"
+      },
+      {
+        "content": "all three",
+        "id": "user-da8927bc-3093-4092-b3eb-534355330a65",
+        "role": "user",
+        "timestamp": "2026-04-10T02:44:18.607Z"
+      },
+      {
+        "content": "Prepared the first draft of the requirement brief based on the information provided.",
+        "id": "assistant-7270277e-cf10-4b4d-8573-4c982215ea2e",
+        "role": "assistant",
+        "timestamp": "2026-04-10T02:44:23.099Z"
+      }
+    ],
+    "collectedContext": {
+      "business_context": "A quality-of-life feature for customers that improves the loan calculator experience and makes it easier to understand loan options.",
+      "functional_requirements": "When a user enters or changes the loan duration, the system must calculate and display the loan amount, monthly payment, and interest rate.",
+      "goal": "The loan calculator should use the entered loan duration to calculate and display the loan amount, monthly payment, and interest rate.",
+      "non_functional_requirements": "Security and privacy.",
+      "risks_and_dependencies": "None at the moment.",
+      "users": "Customers using the loan calculator."
+    },
+    "createdAt": "2026-04-10T02:42:43.890Z",
+    "language": "en",
+    "lastError": null,
+    "pendingComments": [],
+    "phase": "review",
+    "revisions": [
+      {
+        "createdAt": "2026-04-10T02:44:23.099Z",
+        "id": "rev-ee5a5fae-9dcc-4e65-817f-6a9072625fa3",
+        "markdown": "# Requirement Brief\n\n## Goal\n\nThe goal of this change is to enhance the loan calculator so that, when a customer enters the loan duration, the calculator can determine and display the corresponding loan amount, monthly payment, and interest rate. This should provide customers with a clearer and more useful self-service experience when exploring loan options.\n\n## Business Context\n\nThis requirement is driven by a quality-of-life improvement for customers. The business need is to make the loan calculator more helpful and intuitive by allowing customers to understand key loan parameters from the loan duration input without requiring additional manual effort or assistance.\n\nBy improving the calculator experience, the bank can support better customer engagement and make the loan journey easier to understand. This may also reduce friction during product exploration and improve the overall digital experience for end users.\n\n## Users\n\nThe primary users are customers using the loan calculator in a digital banking context. These users are expected to input the loan duration and review the resulting loan-related outputs to support their borrowing decisions.\n\n## Functional Requirements\n\nThe loan calculator must accept loan duration as an input and use that input to calculate and display the loan amount, monthly payment, and interest rate. The system should present these outputs in a clear and understandable format for customers.\n\nThe calculator should respond correctly when the loan duration is entered or updated, ensuring the displayed results reflect the latest input. The calculation logic should support the expected customer journey of comparing loan scenarios based on duration.\n\n## Non-Functional Requirements\n\nThe solution must meet security and privacy expectations appropriate for a banking application. Customer input and any derived financial information must be handled securely and in accordance with applicable privacy requirements.\n\nThe feature should also be implemented in a way that preserves trust and reliability in the calculator experience. Results should be presented consistently and without exposing unnecessary personal or sensitive data.\n\n## Risks and Dependencies\n\nNo specific risks or external dependencies have been identified at this time. If calculation logic depends on existing pricing rules, product configuration, or interest rate models, those dependencies should be confirmed during implementation planning.\n\n## Open Questions\n\nNone at the moment.",
+        "source": "generated"
+      }
+    ],
+    "schemaVersion": 1,
+    "sessionId": "session-f731b185-4e92-42e9-8bb5-2a85601e3207",
+    "status": "ready",
+    "templateId": "business-requirements-v1",
+    "updatedAt": "2026-04-10T02:44:23.100Z"
+  }
+}

@@ -1,6 +1,6 @@
 import type { RequirementsContext } from './data/template';
 
-export type Phase = 'clarification' | 'review';
+export type Phase = 'clarification' | 'review' | 'submitted';
 export type SessionStatus = 'idle' | 'loading' | 'ready' | 'error';
 export type MessageRole = 'user' | 'assistant';
 export type RevisionSource = 'generated' | 'revised';
