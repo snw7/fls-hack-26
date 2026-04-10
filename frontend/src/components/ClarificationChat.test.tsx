@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { createEmptyRequirementsContext } from '../data/template';
 import { ClarificationChat } from './ClarificationChat';
 
 type RecorderState = 'inactive' | 'recording' | 'paused';
@@ -39,6 +40,7 @@ function Harness({
       messages={[]}
       value={value}
       busy={false}
+      collectedContext={createEmptyRequirementsContext()}
       onChange={setValue}
       onSubmit={() => undefined}
       onGenerateDraft={() => undefined}
